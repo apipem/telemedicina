@@ -9,12 +9,15 @@ use Yii;
  *
  * @property int $id
  * @property string $nombre_completo
+ * @property int $documento
+ * @property string $tipo_documento
  * @property string $nombre_usuario
  * @property string $contrasena
  * @property string $correo_electronico
  * @property string $rol
  * @property string|null $telefono
  * @property string|null $direccion
+ * @property string|null $Ciudad
  * @property string|null $fecha_nacimiento
  * @property string|null $genero
  * @property string|null $fecha_creacion
@@ -47,15 +50,17 @@ class Usuarios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre_completo', 'nombre_usuario', 'contrasena', 'correo_electronico', 'rol'], 'required'],
-            [['rol', 'genero'], 'string'],
+            [['nombre_completo', 'documento', 'nombre_usuario', 'contrasena', 'correo_electronico', 'rol'], 'required'],
+            [['documento', 'estado'], 'integer'],
+            [['tipo_documento', 'rol', 'genero'], 'string'],
             [['fecha_nacimiento', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
-            [['estado'], 'integer'],
             [['nombre_completo', 'contrasena', 'direccion'], 'string', 'max' => 255],
             [['nombre_usuario', 'correo_electronico'], 'string', 'max' => 100],
             [['telefono'], 'string', 'max' => 20],
+            [['Ciudad'], 'string', 'max' => 45],
             [['nombre_usuario'], 'unique'],
             [['correo_electronico'], 'unique'],
+            [['documento'], 'unique'],
         ];
     }
 
@@ -67,12 +72,15 @@ class Usuarios extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nombre_completo' => 'Nombre Completo',
+            'documento' => 'Documento',
+            'tipo_documento' => 'Tipo Documento',
             'nombre_usuario' => 'Nombre Usuario',
             'contrasena' => 'Contrasena',
             'correo_electronico' => 'Correo Electronico',
             'rol' => 'Rol',
             'telefono' => 'Telefono',
             'direccion' => 'Direccion',
+            'Ciudad' => 'Ciudad',
             'fecha_nacimiento' => 'Fecha Nacimiento',
             'genero' => 'Genero',
             'fecha_creacion' => 'Fecha Creacion',
