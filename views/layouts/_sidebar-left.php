@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="<?= Yii::$app->getUrlManager()->createUrl('') ?>" class="brand-link" style="text-decoration: none;">
         <img src="<?= Yii::$app->getUrlManager()->createUrl('img/AdminLTELogo.png') ?>" alt="ACADEMY Logo" class="brand-image elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light ms-2">Proyecto integrador</span>
+        <span class="brand-text font-weight-light ms-2">Telemedicina</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,7 +13,7 @@
                 <img src="https://picsum.photos/200/200?random" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block text-white"><?= Yii::$app->user->identity->nombre." ".Yii::$app->user->identity->apellido ?></a>
+                <a href="#" class="d-block text-white"><?= Yii::$app->user->identity->nombre_completo?></a>
                 <span class="text-sm text-white"><?= Yii::$app->user->identity->rol?></span>
             </div>
         </div>

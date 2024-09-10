@@ -80,10 +80,7 @@ class LoginForm extends Model
                 if(Usuarios::isFuncionario($this->getUser()->getId())){
                     return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
 
-                }else if(Usuarios::isEstudiante($this->getUser()->getId())){
-                    Yii::$app->user->setReturnUrl('site/index');
-                    return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
-                } else if(Usuarios::isAdministrador()){
+                }else if(Usuarios::isAdministrador()){
                     Yii::$app->user->setReturnUrl('site/index');
                     return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
                 }
