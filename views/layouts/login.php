@@ -42,7 +42,7 @@ AppAsset::register($this);
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-image: url('https://aplicativos.udi.edu.co/investigaciones/img/invest2.jpg');
+            background-image: url("<?= \yii\helpers\Url::to('@web/images/banner-medico-medico-gafas.jpg') ?>");
         }
     </style>
 </head>
@@ -64,7 +64,7 @@ AppAsset::register($this);
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="registrationForm" action="/academy/web/persona/psico" method="post">
+                <form id="registrationForm" action="" method="post">
                     <div class="row">
                         <div class="col-4 mb-3">
                             <div class="mb-3">
@@ -74,14 +74,20 @@ AppAsset::register($this);
                         </div>
                         <div class="col-4 mb-3">
                             <div class="mb-3">
-                                <label for="name" class="col-form-label">Nombres:</label>
-                                <input type="text" class="form-control" id="name" name="name">
+                                <label for="user" class="col-form-label">Tipo de documento:</label>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="td" id="td">
+                                    <option selected>Selecciona</option>
+                                    <option value="TI">Tarjeta de identida</option>
+                                    <option value="CC">Cedula de ciudadania</option>
+                                    <option value="CE">Cedula Extranjera</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-4 mb-3">
                             <div class="mb-3">
-                                <label for="last" class="col-form-label">Apellidos:</label>
-                                <input type="text" class="form-control" id="last" name="last">
+                                <label for="name" class="col-form-label">Nombres y apellidos:</label>
+                                <input type="text" class="form-control" id="name" name="name">
                             </div>
                         </div>
                     </div>
@@ -91,8 +97,8 @@ AppAsset::register($this);
                                 <label for="user" class="col-form-label">Usuario:</label>
                                 <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="user" id="user">
                                     <option selected>Selecciona</option>
-                                    <option value="estudiante">Estudiante</option>
-                                    <option value="profesor">Profesor</option>
+                                    <option value="Paciente">Paciente</option>
+                                    <option value="Medico">Medico</option>
                                 </select>
                             </div>
                         </div>

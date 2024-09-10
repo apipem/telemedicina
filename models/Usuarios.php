@@ -11,7 +11,6 @@ use Yii;
  * @property string $nombre_completo
  * @property int $documento
  * @property string $tipo_documento
- * @property string $nombre_usuario
  * @property string $contrasena
  * @property string $correo_electronico
  * @property string $rol
@@ -50,15 +49,14 @@ class Usuarios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre_completo', 'documento', 'nombre_usuario', 'contrasena', 'correo_electronico', 'rol'], 'required'],
+            [['nombre_completo', 'documento', 'contrasena', 'correo_electronico', 'rol'], 'required'],
             [['documento', 'estado'], 'integer'],
             [['tipo_documento', 'rol', 'genero'], 'string'],
             [['fecha_nacimiento', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
             [['nombre_completo', 'contrasena', 'direccion'], 'string', 'max' => 255],
-            [['nombre_usuario', 'correo_electronico'], 'string', 'max' => 100],
+            [['correo_electronico'], 'string', 'max' => 100],
             [['telefono'], 'string', 'max' => 20],
             [['Ciudad'], 'string', 'max' => 45],
-            [['nombre_usuario'], 'unique'],
             [['correo_electronico'], 'unique'],
             [['documento'], 'unique'],
         ];
@@ -74,7 +72,6 @@ class Usuarios extends \yii\db\ActiveRecord
             'nombre_completo' => 'Nombre Completo',
             'documento' => 'Documento',
             'tipo_documento' => 'Tipo Documento',
-            'nombre_usuario' => 'Nombre Usuario',
             'contrasena' => 'Contrasena',
             'correo_electronico' => 'Correo Electronico',
             'rol' => 'Rol',

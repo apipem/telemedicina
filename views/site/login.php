@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h1 class="card-title text-center">Proyecto Integrador</h1>
+                <h1 class="card-title text-center">Telemedicina</h1>
 
                 <p class="card-text text-center">Por favor, ingrese su número de documento y su contraseña:</p>
 
@@ -78,8 +78,8 @@ $this->params['breadcrumbs'][] = $this->title;
             url: "<?= Yii::$app->getUrlManager()->createUrl('recurso/persona') ?>",
             data: {
                 cc: $("#cc").val(),
+                td: $("#td").val(),
                 name: $("#name").val(),
-                last: $("#last").val(),
                 user: $("#user").val(),
                 email: $("#email").val(),
                 password: $("#password").val(),
