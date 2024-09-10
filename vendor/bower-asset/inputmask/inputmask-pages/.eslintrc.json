@@ -1,11 +1,11 @@
 {
+  "root": true,
   "env": {
     "browser": true,
-    "es2021": true,
+    "es2024": true,
     "jest": true
   },
   "extends": [
-    "plugin:react/recommended",
     "standard",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",

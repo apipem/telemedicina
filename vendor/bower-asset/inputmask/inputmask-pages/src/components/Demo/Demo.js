@@ -14,6 +14,22 @@ export const Demo = () => {
         maskOptions={{ alias: "datetime", inputFormat: "mm/dd/yyyy" }}
       />
       <DemoMask
+        label="Date:"
+        maskOptions={{
+          alias: "datetime",
+          inputFormat: "dd mmm yyyy",
+          inputmode: "text"
+        }}
+      />
+      <DemoMask
+        label="Date:"
+        maskOptions={{
+          alias: "datetime",
+          inputFormat: "dd mmmm yyyy",
+          inputmode: "text"
+        }}
+      />
+      <DemoMask
         label="Currency:"
         maskOptions={{
           alias: "numeric",
@@ -34,7 +50,11 @@ export const Demo = () => {
         maskOptions={{ alias: "decimal", groupSeparator: "," }}
         comment="Group separator: , RadixPoint: ."
       />
-      <DemoMask label="IP address:" maskOptions={{ alias: "ip" }} />
+      <DemoMask
+        label="IP address:"
+        maskOptions={{ alias: "ip", greedy: true }}
+        comment="greedy: true"
+      />
       <DemoMask label="Email address:" maskOptions={{ alias: "email" }} />
     </div>
   );

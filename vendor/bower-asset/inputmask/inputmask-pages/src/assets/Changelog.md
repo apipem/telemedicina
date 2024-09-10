@@ -1,5 +1,51 @@
 # Change Log
 
+## [5.0.9 - UNRELEASED]
+
+### Addition
+- Add exports field in package.json #2690
+
+### Updates
+- only apply character substitution on 'human' input - #2765
+- better handle unmatching alternations - #2277
+- datetime alias
+  - add support for mmm & mmmm #2751
+  - add custom placeholder support
+- Update IP extension to support greedy option. #2749
+- Properly handle insertMode false in alternation logic.
+- Enhance resolving of the ndxInitializer to determine the alternating tests.
+
+### Fixed
+- Two-character time marker AM or PM doesn't work #2794
+- Input freezes after changing decimal value symbol twice #2731
+- Poor performance on decimal input mask #1505
+- TypeError: Cannot read properties of null (reading 'charAt') at m.onBeforeMask #2789
+- Cursor moves to start when there is a 0 in the decimal, How to stop this behavior? #2784
+- Unexpected character removed #2765
+- d/mm/yyyy is converted to d/m//yyyd #2394
+- Invalid state after editing datetime #2708
+- Inputmask datetime alias mm/yy min value bug #2744
+- ALT codes #2779
+- Pressing the Win button #2780
+- d/mm/yyyy is converted to d/m//yyyd #2394
+- how to get value from input-mask element? #2702
+- Problem with seconds in format 'HH:MM:ss' #2745
+- Remove unused mask - Take2 #2748
+- [Question] How to custom placeholder in "ip" alias? #2749
+- Timezone mask #2730
+- Unicode categories such as \p{P} or \p{S} does not work in regexp property #2741
+- When user press Ctrl+Alt / Alt+Ctrl key in the field, Can input characters with restricted formatting #2736
+- The leap year doesn't play well with jitMasking parameter #2647
+- dd.mm.yyyy can't enter a day greater than the 9 #2723
+- Highlighting Values with Negative Numbers #2714
+- "NumLock", "ScrollLock" strings as input value while "A" mask using. #2720
+- Paste value when all select in inputfield not working good #2603
+- Optional parts not working as expected #2710
+- State of alternator not reset with clearIncomplete = true #2712
+- Change Event fired on Blur even if value has not changed #2691
+- fix ssr issues when navigator is not defined #2704
+- type "dead" characters actually set Dead in the textbox #2701
+
 ## [5.0.8 - 15/03/2023]
 
 ### Addition
@@ -14,7 +60,7 @@
 - drop IE Mobile support
 - datetime alias
   - change default for insertModeVisual to false. - #2664
-- consolidate keydown, keypress & keyup into keyEvent (wip)
+- consolidate keydown, keypress & keyup into keyEvent
 - refactor keyboard event keycode to key
 - refactor validPositions from object to array. - #2428
 - add keepStatic behavior to optional parts - #2619

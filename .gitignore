@@ -5,3 +5,5 @@ protected/data/*.db
 themes/classic/views/
 /.idea
 .idea/*
+/vendor
+vendor/*
