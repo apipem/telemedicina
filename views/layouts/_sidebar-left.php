@@ -40,106 +40,54 @@
                         <p>INICIO</p>
                     </a>
                 </li>
-                <!-- Materias -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>
-                            Materias
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Yii::$app->getUrlManager()->createUrl('materia/index') ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Mis Materias</p>
-                            </a>
-                        </li>
-                        <?php if (Yii::$app->user->identity->rol == "profesor"): ?>
-                            <li class="nav-item">
-                                <a href="<?= Yii::$app->getUrlManager()->createUrl('materia/listado') ?>" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Listar Materias</p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
-                <!-- Recursos -->
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>
-                            Recursos
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
 
-                        <?php if (Yii::$app->user->identity->rol == "profesor"): ?>
-                            <li class="nav-item">
-                                <a href="<?= Yii::$app->getUrlManager()->createUrl('contenido/create') ?>" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Agreagar Material</p>
-                                </a>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a href="<?= Yii::$app->getUrlManager()->createUrl('contenido/create') ?>" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Subir evidencias</p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/video-llamada') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-video"></i>
+                        <p>Video Llamada</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/chat-en-linea') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-comments"></i>
+                        <p>Chat en Línea</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/subir-archivos') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <p>Subir Archivos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/correo-electronico') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-envelope"></i>
+                        <p>Correo Electrónico</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/perfil-usuario') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Perfil del Usuario</p>
+                    </a>
+                </li>
 
-                        <li class="nav-item">
-                            <a href="<?= Yii::$app->getUrlManager()->createUrl('contenido/index') ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Ver Recursos</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Proyectos -->
+                <!--
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-project-diagram"></i>
-                        <p>
-                            Proyectos
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= Yii::$app->getUrlManager()->createUrl('proyecto/proyecto') ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Mis Proyectos</p>
-                            </a>
-                        </li>
-                        <?php if (Yii::$app->user->identity->rol == "profesor"): ?>
-                            <li class="nav-item">
-                                <a href="<?= Yii::$app->getUrlManager()->createUrl('proyecto/index') ?>" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Listar Proyectos</p>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <li class="nav-item">
-                            <a href="<?= Yii::$app->getUrlManager()->createUrl('proyecto/grupos') ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Grupos</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <!-- Notas -->
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('notas/notas') ?>" class="nav-link">
-                        <i class="nav-icon fas fa-clipboard"></i>
-                        <p>Notas</p>
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/configuracion') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>Configuración</p>
                     </a>
                 </li>
+                -->
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('site/logout') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Cerrar Sesión</p>
+                    </a>
+                </li>
+
+
             </ul>
         </nav>
     </div>
