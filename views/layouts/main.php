@@ -7,8 +7,7 @@ use app\assets\AppAsset;
 AppAsset::register($this);
 
 $session = Yii::$app->session;
-//if (true) {
-if ($session->isActive && isset(Yii::$app->user->identity->nombre)) {
+if ($session->isActive && isset(Yii::$app->user->identity->id)) {
     $this->beginPage();
     ?>
 
