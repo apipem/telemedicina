@@ -66,7 +66,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/perfil-usuario') ?>" class="nav-link">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('usuarios/perfil') ?>" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Perfil del Usuario</p>
                     </a>

@@ -7,6 +7,7 @@ use app\models\UsuariosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UsuariosController implements the CRUD actions for Usuarios model.
@@ -45,6 +46,25 @@ class UsuariosController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionPerfil()
+    {
+         $model = $this->findModel(Yii::$app->user->identity->id);
+
+            if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+                return $this->render('perfil', [
+                                'model' => $model,'status'=>'ok'
+                            ]);
+            }else{
+                return $this->render('perfil', [
+                                'model' => $model,'status'=>'error'
+                            ]);
+            }
+
+            return $this->render('perfil', [
+                'model' => $model,
+            ]);
     }
 
     /**
