@@ -31,16 +31,22 @@
     <h2>Seleccionar un Médico para Chatear</h2>
     <div class="row">
         <?php foreach ($medicos as $medico) { ?>
+        <?php if ($medico->disponible != "0") { ?>
         <div class="col-md-4">
             <div class="card mb-4">
-                <div class="card-body">
+                <?php if ($medico->disponible == "1") { ?>
+                    <div class="card-body ">
+                <?php }?>
+                <?php if ($medico->disponible == "2") { ?>
+                    <div class="card-body en_pausa">
+                <?php }?>
                     <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
                     <p class="card-text">Médico General</p>
-                    <a href="chat?chat=<?= Yii::$app->security->encryptByKey($medico->id, 'tele') ?>" class="btn btn-primary">Chatear</a>
+                    <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>" class="btn btn-primary">Chatear</a>
                 </div>
             </div>
         </div>
-        <?php } ?>
+        <?php }} ?>
     </div>
 </div>
 <?php } ?>
@@ -81,35 +87,45 @@
 <?php } ?>
 
 <div class="container mt-5">
-    <h2>Conversaciones Anteriores</h2>
+    <h2>Conversaciones Abiertas</h2>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=john'">
-                <div class="card-body">
-                    <h5 class="card-title">John Doe</h5>
-                    <p class="card-text">Última conversación: 12/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
+        <?php foreach ($chats as $chat) { ?>
+            <div class="col-md-4">
+                <div class="card mb-4" onclick="window.location.href='chat.html?user=<?= urlencode($chat->id_paciente0->id ?? '') ?>'">
+                    <div class="card-body">
+                        <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+                            <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
+                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
+                            <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
+                        <?php } ?>
+                        <p class="card-text">Fecha Inicial: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_inicio)) ?></p>
+                        <button class="btn btn-primary">Reanudar Chat</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=jane'">
-                <div class="card-body">
-                    <h5 class="card-title">Jane Smith</h5>
-                    <p class="card-text">Última conversación: 11/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
+        <?php } ?>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2>Conversaciones Cerradas</h2>
+    <div class="row">
+        <?php foreach ($chatce as $chat) { ?>
+            <div class="col-md-4">
+                <div class="card mb-4" onclick="window.location.href='chat.html?user=<?= urlencode($chat->id_paciente0->id ?? '') ?>'">
+                    <div class="card-body">
+                        <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+                            <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
+                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
+                            <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
+                        <?php } ?>
+                        <p class="card-text">Fecha Inicial: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_inicio)) ?></p>
+                        <p class="card-text">Fecha Final: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_fin)) ?></p>
+                        <button class="btn btn-primary">Revisar Chat</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=mike'">
-                <div class="card-body">
-                    <h5 class="card-title">Mike Johnson</h5>
-                    <p class="card-text">Última conversación: 10/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
-                </div>
-            </div>
-        </div>
+        <?php } ?>
     </div>
 </div>
 
