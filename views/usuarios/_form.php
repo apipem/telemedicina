@@ -10,91 +10,40 @@ use yii\widgets\ActiveForm;
 
 <div class="usuarios-form">
 
-    <?php $form = ActiveForm::begin([
-        'options' => ['class' => 'form-horizontal'], // Añadido para estilizar el formulario
-    ]); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'nombre_completo')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'documento')->textInput() ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'nombre_completo')->textInput(['maxlength' => true]) ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'tipo_documento')->dropDownList([
-                'TI' => 'TI',
-                'CC' => 'CC',
-                'CE' => 'CE',
-                'OTRO' => 'OTRO',
-            ], ['prompt' => 'Seleccionar tipo de documento']) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'contrasena')->passwordInput(['maxlength' => true]) ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'documento')->textInput() ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'correo_electronico')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'rol')->dropDownList([
-                'Paciente' => 'Paciente',
-                'Medico' => 'Medico',
-            ], ['prompt' => 'Seleccionar rol']) ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'tipo_documento')->dropDownList([ 'TI' => 'TI', 'CC' => 'CC', 'CE' => 'CE', 'OTRO' => 'OTRO', ], ['prompt' => '']) ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'contrasena')->textInput(['maxlength' => true]) ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'Ciudad')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'fecha_nacimiento')->input('date') ?>
-        </div>
-    </div>
+    <?= $form->field($model, 'correo_electronico')->textInput(['maxlength' => true]) ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'genero')->dropDownList([
-                'masculino' => 'Masculino',
-                'femenino' => 'Femenino',
-                'otro' => 'Otro',
-            ], ['prompt' => 'Seleccionar género']) ?>
-        </div>
-        <!--
-        <div class="col-md-6">
-            <?= $form->field($model, 'fecha_creacion')->input('date') ?>
-        </div>
-        -->
-    </div>
-    <!--
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'fecha_actualizacion')->input('date') ?>
-        </div>
-        <div class="col-md-6">
-            <?= $form->field($model, 'estado')->textInput() ?>
-        </div>
-    </div>
-    -->
+    <?= $form->field($model, 'rol')->dropDownList([ 'Paciente' => 'Paciente', 'Medico' => 'Medico', ], ['prompt' => '']) ?>
+
+    <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'Ciudad')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'fecha_nacimiento')->textInput() ?>
+
+    <?= $form->field($model, 'genero')->dropDownList([ 'masculino' => 'Masculino', 'femenino' => 'Femenino', 'otro' => 'Otro', ], ['prompt' => '']) ?>
+
+    <?= $form->field($model, 'fecha_creacion')->textInput() ?>
+
+    <?= $form->field($model, 'fecha_actualizacion')->textInput() ?>
+
+    <?= $form->field($model, 'estado')->textInput() ?>
+
+    <?= $form->field($model, 'disponible')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Cancelar', ['index'], ['class' => 'btn btn-secondary']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
