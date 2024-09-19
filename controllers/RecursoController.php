@@ -9,6 +9,7 @@ use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response; 
 
 
 class RecursoController extends Controller
@@ -27,7 +28,7 @@ class RecursoController extends Controller
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['listestudiantes','listprofesores'],
+                    'actions' => ['estado','listprofesores'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -61,11 +62,26 @@ class RecursoController extends Controller
 
     }
 
-    public function actionListprofesores(){return Json::encode(Usuario::find()->where("rol = 'profesor'")->all());}
+    public function actionEstado(){
+        Yii::$app->response->format = Response::FORMAT_JSON;
 
+        $disponibilidad = Yii::$app->request->post('disponibilidad');
 
-    public function actionListmaterias(){return Json::encode(Materia::find()->all());}
+        // Actualiza la disponibilidad del médico
+        $medico = Yii::$app->user->identity; // Suponiendo que el usuario es un médico
 
-    public function actionListproyectos(){return Json::encode(Proyecto::find()->all());}
+        if ($medico) {
+            $medico->disponible = $disponibilidad; // Asigna el nuevo estado
+
+            if ($medico->save()) {
+                return ['success' => true];
+            } else {
+                return ['success' => false, 'message' => 'Error al guardar la disponibilidad.'];
+            }
+        }
+
+        return ['success' => false, 'message' => 'Médico no encontrado.'];
+    }
+
 
 }
