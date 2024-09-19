@@ -42,13 +42,13 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/video-llamada') ?>" class="nav-link">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('video/index') ?>" class="nav-link">
                         <i class="nav-icon fas fa-video"></i>
                         <p>Video Llamada</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/chat-en-linea') ?>" class="nav-link">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('chat/index') ?>" class="nav-link">
                         <i class="nav-icon fas fa-comments"></i>
                         <p>Chat en Línea</p>
                     </a>
