@@ -56,7 +56,7 @@
     <h2>Seleccionar su Estado de Disponibilidad</h2>
     <div class="row">
         <div class="col-md-4">
-            <div class="card mb-4 disponible" onclick="selectStatus(this, 'disponible')">
+            <div class="card mb-4 disponible" onclick="selectStatus(this, '1')">
                 <div class="card-body text-center">
                     <h5 class="card-title">Disponible</h5>
                     <p class="card-text">Estás disponible para atender consultas.</p>
