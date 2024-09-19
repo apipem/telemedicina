@@ -91,7 +91,7 @@
     <div class="row">
         <?php foreach ($chats as $chat) { ?>
             <div class="col-md-4">
-                <div class="card mb-4" onclick="window.location.href='chat.html?user=<?= urlencode($chat->id_paciente0->id ?? '') ?>'">
+                <div class="card mb-4">
                     <div class="card-body">
                         <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
@@ -99,7 +99,11 @@
                             <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
                         <?php } ?>
                         <p class="card-text">Fecha Inicial: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_inicio)) ?></p>
-                        <button class="btn btn-primary">Reanudar Chat</button>
+                        <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+                            <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_paciente, 'telem')) ?>" class="btn btn-primary">Reanudar Chat</a>
+                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
+                            <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_medico, 'telem')) ?>" class="btn btn-primary">Reanudar Chat</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -112,7 +116,7 @@
     <div class="row">
         <?php foreach ($chatce as $chat) { ?>
             <div class="col-md-4">
-                <div class="card mb-4" onclick="window.location.href='chat.html?user=<?= urlencode($chat->id_paciente0->id ?? '') ?>'">
+                <div class="card mb-4">
                     <div class="card-body">
                         <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>

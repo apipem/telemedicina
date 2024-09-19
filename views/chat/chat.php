@@ -33,7 +33,7 @@
 <?php } ?>
 <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
     <input type="hidden" placeholder="" id="out" value="<?= $chat->id_paciente ?>">
-    <input type="hidden" placeholder="" id="int" value="<?= $chat->id_medico ?>">
+    <input type="hidden" placeholder="" id="in" value="<?= $chat->id_medico ?>">
 <?php } ?>
 
 <div class="container mt-5">
