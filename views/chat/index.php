@@ -36,17 +36,17 @@
             <div class="card mb-4">
                 <?php if ($medico->disponible == "1") { ?>
                     <div class="card-body ">
-                <?php }?>
+                <?php } ?>
                 <?php if ($medico->disponible == "2") { ?>
                     <div class="card-body en_pausa">
-                <?php }?>
+                <?php } ?>
                     <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
                     <p class="card-text">Médico General</p>
                     <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>" class="btn btn-primary">Chatear</a>
                 </div>
             </div>
         </div>
-        <?php }} ?>
+        <?php } } ?>
     </div>
 </div>
 <?php } ?>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card mb-4 no_disponible" onclick="selectStatus(this, 'no_disponible')">
+            <div class="card mb-4 no_disponible" onclick="selectStatus(this, '0')">
                 <div class="card-body text-center">
                     <h5 class="card-title">No Disponible</h5>
                     <p class="card-text">No estás disponible para atender consultas.</p>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card mb-4 en_pausa" onclick="selectStatus(this, 'en_pausa')">
+            <div class="card mb-4 en_pausa" onclick="selectStatus(this, '2')">
                 <div class="card-body text-center">
                     <h5 class="card-title">En Pausa</h5>
                     <p class="card-text">Estás en pausa, puedes volver más tarde.</p>
@@ -151,8 +151,25 @@
     }
 
     document.getElementById('confirm-button').addEventListener('click', () => {
-        alert(`Estado seleccionado: ${selectedStatus}`);
-        // Aquí puedes agregar la lógica para enviar el estado al servidor
+        $.ajax({
+            url: '<?= Yii::$app->getUrlManager()->createUrl("recurso/estado") ?>',
+            method: 'POST',
+            data: {
+                disponibilidad: selectedStatus,
+                // Agregar el token CSRF si es necesario
+                <?= Yii::$app->request->csrfParam ?>: '<?= Yii::$app->request->csrfToken ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload(); // Recargar la página
+                } else {
+                    alert('Error al cambiar el estado. Inténtalo de nuevo.');
+                }
+            },
+            error: function() {
+                alert('Error de conexión. Inténtalo más tarde.');
+            }
+        });
     });
 </script>
 
