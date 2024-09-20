@@ -24,6 +24,7 @@ use yii\web\IdentityInterface;
  * @property string|null $fecha_creacion
  * @property string|null $fecha_actualizacion
  * @property int $estado
+ * @property int|null $status
  *
  * @property ArchivosSubidos[] $archivosSubidos
  * @property Chats[] $chats
@@ -53,7 +54,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             [['nombre_completo', 'documento', 'contrasena', 'correo_electronico', 'rol'], 'required'],
-            [['documento', 'estado'], 'integer'],
+            [['documento', 'estado', 'status'], 'integer'],
             [['tipo_documento', 'rol', 'genero'], 'string'],
             [['fecha_nacimiento', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
             [['nombre_completo', 'contrasena', 'direccion'], 'string', 'max' => 255],
@@ -86,6 +87,7 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
             'fecha_creacion' => 'Fecha Creacion',
             'fecha_actualizacion' => 'Fecha Actualizacion',
             'estado' => 'Estado',
+            'status' => 'Status',
         ];
     }
 
