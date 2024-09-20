@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Usuarios;
 
 class SiteController extends Controller
 {
@@ -71,6 +72,18 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $session = Yii::$app->session;
+        if ($session->isActive && !Yii::$app->user->isGuest) {
+            if (Yii::$app->user->identity->documento == '100' && Yii::$app->user->identity->nombre_completo == 'admin') {
+                $usersa = Usuarios:: find()->where(['estado' => '0'])->all();
+                $userso = Usuarios:: find()->where(['estado' => '1'])->all();
+                return $this->render('index', [
+                                             'usersa' => $usersa,
+                                             'userso' => $userso,
+                                         ]);
+            }
+        }
+
         return $this->render('index');
     }
 

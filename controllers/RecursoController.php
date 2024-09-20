@@ -29,7 +29,7 @@ class RecursoController extends Controller
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['estado','listprofesores'],
+                    'actions' => ['estado','listprofesores','activate', 'deactivate'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -96,5 +96,40 @@ class RecursoController extends Controller
         return ['success' => false, 'message' => 'Médico no encontrado.'];
     }
 
+    public function actionActivate()
+        {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $userId = Yii::$app->request->post('id');
+            $user = Usuarios::findOne($userId);
+
+            if ($user) {
+                $user->estado = 1;
+                if ($user->save()) {
+                    return ['success' => true, 'message' => 'Usuario activado con éxito.'];
+                }
+                return ['success' => false, 'message' => 'No se pudo activar el usuario.'];
+            }
+
+            return ['success' => false, 'message' => 'Usuario no encontrado.'];
+        }
+
+        public function actionDeactivate()
+        {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            $userId = Yii::$app->request->post('id');
+            $user = Usuarios::findOne($userId);
+
+            if ($user) {
+                $user->estado = 0;
+                if ($user->save()) {
+                    return ['success' => true, 'message' => 'Usuario desactivado con éxito.'];
+                }
+                return ['success' => false, 'message' => 'No se pudo desactivar el usuario.'];
+            }
+
+            return ['success' => false, 'message' => 'Usuario no encontrado.'];
+        }
 
 }

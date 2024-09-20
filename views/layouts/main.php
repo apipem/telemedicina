@@ -87,7 +87,7 @@ if ($session->isActive && isset(Yii::$app->user->identity->id)) {
 
                 if (currentUrl === linkUrl || currentUrl.startsWith(linkUrl + '/')) {
                     $(this).addClass("active");
-                    $(this).closest(".nav-item").addClass("menu-open"); 
+                    $(this).closest(".nav-item").addClass("menu-open");
                 }
             });
         });

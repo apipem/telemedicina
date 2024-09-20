@@ -208,14 +208,14 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
      /////////////////////Encriptar password//////////////////
         public function beforeSave($insert)
         {
-            try {
+            // Solo encriptar la contraseña si se está creando un nuevo usuario
+            if ($insert && !empty($this->contrasena)) {
                 $this->contrasena = Yii::$app->security->generatePasswordHash($this->contrasena);
-            } catch (Exception $e) {
-                echo $e;
             }
 
             return parent::beforeSave($insert);
         }
+
     /////////////////////////////////LOGiNNNNNNN////////////////////////////////
 
         /**
