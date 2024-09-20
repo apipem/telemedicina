@@ -32,7 +32,6 @@ use yii\web\IdentityInterface;
  * @property ConfiguracionesUsuarios[] $configuracionesUsuarios
  * @property CorreosElectronicos[] $correosElectronicos
  * @property CorreosElectronicos[] $correosElectronicos0
- * @property Disponible $disponible
  * @property MensajesChat[] $mensajesChats
  * @property Videollamadas[] $videollamadas
  * @property Videollamadas[] $videollamadas0
@@ -149,16 +148,6 @@ class Usuarios extends \yii\db\ActiveRecord implements IdentityInterface
     public function getCorreosElectronicos0()
     {
         return $this->hasMany(CorreosElectronicos::class, ['id_destinatario' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Disponible]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDisponible()
-    {
-        return $this->hasOne(Disponible::class, ['usuarios_id' => 'id']);
     }
 
     /**

@@ -93,8 +93,8 @@
                         <p>
                             Estado de Disponibilidad:
                             <span id="availability-status" class="
-                                <?= Yii::$app->user->identity->disponible->estado == 1 ? 'text-success' : (Yii::$app->user->identity->disponible->estado == 0 ? 'text-danger' : 'text-warning') ?>">
-                                <?= Yii::$app->user->identity->disponible->estado == 1 ? 'Disponible' : (Yii::$app->user->identity->disponible->estado == 0 ? 'No Disponible' : 'En Pausa') ?>
+                                <?= Yii::$app->user->identity->status == 1 ? 'text-success' : (Yii::$app->user->identity->status == 0 ? 'text-danger' : 'text-warning') ?>">
+                                <?= Yii::$app->user->identity->status == 1 ? 'Disponible' : (Yii::$app->user->identity->status == 0 ? 'No Disponible' : 'En Pausa') ?>
                             </span>
                         </p>
                     </a>

@@ -84,7 +84,7 @@ class RecursoController extends Controller
         $medico = Yii::$app->user->identity; // Suponiendo que el usuario es un médico
 
         if ($medico) {
-            $medico->disponible = $disponibilidad; // Asigna el nuevo estado
+            $medico->status = $disponibilidad; // Asigna el nuevo estado
 
             if ($medico->save()) {
                 return ['success' => true];
