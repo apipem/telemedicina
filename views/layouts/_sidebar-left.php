@@ -86,21 +86,20 @@
                         <p>Cerrar Sesión</p>
                     </a>
                 </li>
+                <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-check"></i>
                         <p>
                             Estado de Disponibilidad:
                             <span id="availability-status" class="
-                                <?= Yii::$app->user->identity->disponible == 1 ? 'text-success' : (Yii::$app->user->identity->disponible == 0 ? 'text-danger' : 'text-warning') ?>">
-                                <?= Yii::$app->user->identity->disponible == 1 ? 'Disponible' : (Yii::$app->user->identity->disponible == 0 ? 'No Disponible' : 'En Pausa') ?>
+                                <?= Yii::$app->user->identity->disponible->estado == 1 ? 'text-success' : (Yii::$app->user->identity->disponible->estado == 0 ? 'text-danger' : 'text-warning') ?>">
+                                <?= Yii::$app->user->identity->disponible->estado == 1 ? 'Disponible' : (Yii::$app->user->identity->disponible->estado == 0 ? 'No Disponible' : 'En Pausa') ?>
                             </span>
                         </p>
                     </a>
                 </li>
-
-
-
+                <?php } ?>
             </ul>
         </nav>
     </div>

@@ -31,22 +31,18 @@
     <h2>Seleccionar un Médico para Chatear</h2>
     <div class="row">
         <?php foreach ($medicos as $medico) { ?>
-        <?php if ($medico->disponible != "0") { ?>
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <?php if ($medico->disponible == "1") { ?>
-                    <div class="card-body ">
-                <?php } ?>
-                <?php if ($medico->disponible == "2") { ?>
-                    <div class="card-body en_pausa">
-                <?php } ?>
-                    <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
-                    <p class="card-text">Médico General</p>
-                    <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>" class="btn btn-primary">Chatear</a>
+            <?php if ($medico->disponible != "0") { ?>
+                <div class="col-md-4">
+                    <div class="card mb-4 <?php echo $medico->disponible == "1" ? '' : ($medico->disponible == "2" ? 'en_pausa' : ''); ?>">
+                        <div class="card-body text-center">
+                            <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
+                            <p class="card-text">Médico General</p>
+                            <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>" class="btn btn-primary">Chatear</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <?php } } ?>
+            <?php } ?>
+        <?php } ?>
     </div>
 </div>
 <?php } ?>
@@ -95,15 +91,11 @@
                     <div class="card-body">
                         <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
-                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
+                        <?php } else { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
                         <?php } ?>
                         <p class="card-text">Fecha Inicial: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_inicio)) ?></p>
-                        <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
-                            <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_paciente, 'telem')) ?>" class="btn btn-primary">Reanudar Chat</a>
-                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
-                            <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_medico, 'telem')) ?>" class="btn btn-primary">Reanudar Chat</a>
-                        <?php } ?>
+                        <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_paciente ?? $chat->id_medico, 'telem')) ?>" class="btn btn-primary">Reanudar Chat</a>
                     </div>
                 </div>
             </div>
@@ -120,7 +112,7 @@
                     <div class="card-body">
                         <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
-                        <?php } elseif (Yii::$app->user->identity->rol == "Paciente") { ?>
+                        <?php } else { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
                         <?php } ?>
                         <p class="card-text">Fecha Inicial: <?= date('d \d\e F \d\e Y', strtotime($chat->fecha_inicio)) ?></p>
@@ -156,7 +148,6 @@
             method: 'POST',
             data: {
                 disponibilidad: selectedStatus,
-                // Agregar el token CSRF si es necesario
                 <?= Yii::$app->request->csrfParam ?>: '<?= Yii::$app->request->csrfToken ?>'
             },
             success: function(response) {

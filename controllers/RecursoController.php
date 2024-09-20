@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Usuarios;
+use app\models\Disponible;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
@@ -55,10 +56,22 @@ class RecursoController extends Controller
         $p->estado = 0;
 
         if ($p->save()) {
-            return "ok";
+            $disponible = new Disponible();
+            $disponible->usuarios_id = $p->id;
+            if ($disponible->save()) {
+                return "ok";
+            }else {
+                // Manejo de errores
+                foreach ($message->getErrors() as $error) {
+                    echo implode(', ', $error) . '<br>';
+                }
+            }
         } else {
-            return "Error";
-        }
+             // Manejo de errores
+             foreach ($message->getErrors() as $error) {
+                 echo implode(', ', $error) . '<br>';
+             }
+         }
 
     }
 
