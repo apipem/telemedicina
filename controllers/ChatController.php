@@ -24,7 +24,7 @@ class ChatController extends Controller
             'class' => AccessControl::className(),
             'rules' => [
                 [
-                    'actions' => ['index','chat','mensaje','get'],
+                    'actions' => ['index','chat','mensaje','get','cerrar'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -45,22 +45,26 @@ class ChatController extends Controller
                                     ->andWhere(['estado' => '1'])
                                     ->all();
 
-         // Inicializar la consulta de Chats
-          $chats = Chats::find();
-          $chatce = Chats::find();
+        // Inicializar la consulta de Chats
+        $chats = Chats::find();
+        $chatce = Chats::find();
 
-          // Filtrar según el rol del usuario
-          if (Yii::$app->user->identity->rol == "Paciente") {
-              $chats->where(['id_paciente' => Yii::$app->user->identity->id]);
-              $chatce->where(['id_paciente' => Yii::$app->user->identity->id]);
-          } elseif (Yii::$app->user->identity->rol == "Medico") {
-              $chats->where(['id_medico' => Yii::$app->user->identity->id]);
-              $chatce->where(['id_medico' => Yii::$app->user->identity->id]);
-          }
-          $chats->andWhere(['estado' => 'activo']);
-          $chatce->andWhere(['estado' => 'completado']);
-          $chats = $chats->all();
-          $chatce = $chatce->all();
+        // Filtrar según el rol del usuario
+        if (Yii::$app->user->identity->rol == "Paciente") {
+            $chats->where(['id_paciente' => Yii::$app->user->identity->id]);
+            $chatce->where(['id_paciente' => Yii::$app->user->identity->id]);
+        } elseif (Yii::$app->user->identity->rol == "Medico") {
+            $chats->where(['id_medico' => Yii::$app->user->identity->id]);
+            $chatce->where(['id_medico' => Yii::$app->user->identity->id]);
+        }
+
+        $chats->andWhere(['estado' => 'activo']);
+        $chatce->andWhere(['estado' => 'completado']);
+
+        // Ordenar por fecha de inicio de manera descendente
+        $chats = $chats->all();
+        $chatce = $chatce->orderBy(['fecha_fin' => SORT_DESC])->all();
+
 
          return $this->render('index', [
                 'medicos' => $medicos,
@@ -77,76 +81,79 @@ class ChatController extends Controller
 
        try {
            $id = Yii::$app->security->decryptByKey($chat, 'telem');
+           // Verifica si la desencriptación fue exitosa
+           if ($id === false) {
+               throw new \Exception("Desencriptación fallida.");
+           }
        } catch (\Exception $e) {
-           echo "Error al desencriptar: " . $e->getMessage();
-           return null; // Devuelve null en caso de error
-       }
-
-       // Verificar si se desencriptó correctamente
-       if ($id === false) {
-           echo "Error al desencriptar el ID.";
+           Yii::error("Error al desencriptar: " . $e->getMessage());
            return null; // Devuelve null en caso de error
        }
 
        return $id;
    }
 
-   public function actionChat($chat)
-   {
-       // Desencriptar el ID
-       $id = $this->decryptBy($chat);
-       if ($id === null) {
-           return; // Salir si hay un error en la desencriptación
-       }
+    public function actionChat($chat)
+    {
+        $id = $this->decryptBy($chat);
+        if ($id === null) {
+            Yii::$app->session->setFlash('error', 'ID de chat inválido.');
+            return $this->redirect(['index']);
+        }
 
-       // Inicializar la consulta de Chats
-       $antiguoChatQuery = Chats::find();
+        // Obtener el ID del chat enviado desde la vista
+        $chatId = Yii::$app->request->get('chatId');
 
-       // Filtrar según el rol del usuario
-       if (Yii::$app->user->identity->rol == "Paciente") {
-           $antiguoChatQuery->where(['id_paciente' => Yii::$app->user->identity->id])
-                             ->andWhere(['id_medico' => $id]);
-       } elseif (Yii::$app->user->identity->rol == "Medico") {
-           $antiguoChatQuery->where(['id_medico' => Yii::$app->user->identity->id])
-                             ->andWhere(['id_paciente' => $id]);
-       }
+        // Inicializar la consulta de Chats
+        $chatQuery = Chats::find();
 
-       $antiguoChatQuery->andWhere(['estado' => 'activo']);
-       $antiguoChat = $antiguoChatQuery->all();
+        if (Yii::$app->user->identity->rol == "Paciente") {
+            $chatQuery->where(['id_paciente' => Yii::$app->user->identity->id])
+                       ->andWhere(['id_medico' => $id]);
+        } elseif (Yii::$app->user->identity->rol == "Medico") {
+            $chatQuery->where(['id_medico' => Yii::$app->user->identity->id])
+                       ->andWhere(['id_paciente' => $id]);
+        }
 
-       // Obtener el médico
-       $persona = Usuarios::findOne($id);
+        // Verificar si ya existe un chat activo
+        $chatExistente = $chatQuery->andWhere(['estado' => 'activo'])->one();
 
-       // Verificar si se encontraron chats antiguos
-       if (!empty($antiguoChat)) {
+        // Si se desea consultar un chat existente
+        if ($chatId) {
+            $chatParaConsultar = Chats::findOne($chatId);
+            if ($chatParaConsultar) {
+                return $this->render('chat', [
+                    'persona' => Usuarios::findOne($id),
+                    'chat' => $chatParaConsultar,
+                ]);
+            }
+        }
 
-           foreach ($antiguoChat as $chate) {
-               return $this->render('chat', [
-                                     'persona' => $persona,
-                                     'chat' => $chate,
-                                 ]);
-           }
+        // Si ya existe un chat activo, retornarlo
+        if ($chatExistente) {
+            return $this->render('chat', [
+                'persona' => Usuarios::findOne($id),
+                'chat' => $chatExistente,
+            ]);
+        }
 
-       } else {
-           // Crear un nuevo chat
-           $nuevoChat = new Chats();
-           $nuevoChat->id_paciente = Yii::$app->user->identity->id;
-           $nuevoChat->id_medico = $id;
+        // Si no existe un chat activo, crear uno nuevo
+        $nuevoChat = new Chats();
+        $nuevoChat->id_paciente = Yii::$app->user->identity->id;
+        $nuevoChat->id_medico = $id;
 
-           // Intentar guardar el nuevo chat
-           if ($nuevoChat->save()) {
-               return $this->render('chat', [
-                   'persona' => $persona,
-                   'chat' => $chat,
-               ]);
-           } else {
-               // Manejo de errores
-               foreach ($nuevoChat->getErrors() as $error) {
-                   echo implode(', ', $error) . '<br>';
-               }
-           }
-       }
-   }
+        if ($nuevoChat->save()) {
+            return $this->render('chat', [
+                'persona' => Usuarios::findOne($id),
+                'chat' => $nuevoChat,
+            ]);
+        } else {
+            Yii::$app->session->setFlash('error', 'Error al crear el chat: ' . implode(', ', $nuevoChat->getErrors()));
+            return $this->redirect(['index']);
+        }
+    }
+
+
 
     public function actionMensaje(){
         $chatId = (int) Yii::$app->request->post('chatId');
@@ -174,6 +181,24 @@ class ChatController extends Controller
         $messages = MensajesChat::find()->where(['id_chat' => $chatId])->all();
 
         return $this->asJson(['messages' => $messages]);
+    }
+
+    public function actionCerrar()
+    {
+        $chatId = Yii::$app->request->post('id');
+
+        // Aquí debes verificar si el chat existe
+        $chat = Chats::findOne($chatId);
+        if ($chat) {
+            $chat->estado = 'completado'; // O el estado que desees
+            if ($chat->save()) {
+                return $this->asJson(['success' => true]);
+            } else {
+                return $this->asJson(['success' => false]);
+            }
+        }
+
+        return $this->asJson(['success' => false]);
     }
 
 }

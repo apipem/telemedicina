@@ -27,13 +27,17 @@
     }
 </style>
 
-<?php if (Yii::$app->user->identity->rol == "Paciente") { ?>
-    <input type="hidden" placeholder="" id="in" value="<?= $chat->id_paciente ?>">
-    <input type="hidden" placeholder="" id="out" value="<?= $chat->id_medico ?>">
-<?php } ?>
-<?php if (Yii::$app->user->identity->rol == "Medico") { ?>
-    <input type="hidden" placeholder="" id="out" value="<?= $chat->id_paciente ?>">
-    <input type="hidden" placeholder="" id="in" value="<?= $chat->id_medico ?>">
+<?php if ($chat && is_object($chat)) { ?>
+    <?php if (Yii::$app->user->identity->rol == "Paciente") { ?>
+        <input type="hidden" id="in" value="<?= $chat->id_paciente ?>">
+        <input type="hidden" id="out" value="<?= $chat->id_medico ?>">
+    <?php } ?>
+    <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+        <input type="hidden" id="out" value="<?= $chat->id_paciente ?>">
+        <input type="hidden" id="in" value="<?= $chat->id_medico ?>">
+    <?php } ?>
+<?php } else { ?>
+    <p>Error: No se encontró la información del chat.</p>
 <?php } ?>
 
 <div class="container mt-5">
@@ -41,10 +45,18 @@
     <div class="chat-box" id="chat-box">
         <!-- Los mensajes aparecerán aquí -->
     </div>
-    <div class="input-group mt-3">
-        <input type="text" class="form-control" placeholder="Escribe un mensaje..." id="message-input">
-        <button class="btn btn-primary" id="send-button">Enviar</button>
-    </div>
+    <?php if ($chat->estado != "completado") { ?>
+        <div class="input-group mt-3">
+            <button class="btn btn-danger" id="close-chat">Cerrar Chat</button>
+            <input type="text" class="form-control" placeholder="Escribe un mensaje..." id="message-input">
+            <button class="btn btn-primary" id="send-button">Enviar mensaje</button>
+        </div>
+    <?php } else { ?>
+        <div class="alert alert-warning mt-3">
+            <p>No hay un chat activo. Puedes volver a la lista de chats.</p>
+            <a href="<?= Yii::$app->urlManager->createUrl(['chat/index']) ?>" class="btn btn-secondary">Volver a la lista de chats</a>
+        </div>
+    <?php } ?>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -111,6 +123,41 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    // Cerrar el chat
+    $('#close-chat').on('click', function() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¿Deseas cerrar este chat?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, cerrar',
+            cancelButtonText: 'No, cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '<?= Yii::$app->getUrlManager()->createUrl("chat/cerrar") ?>',
+                    type: 'POST',
+                    data: {
+                        id: chatId,
+                        [csrfParam]: csrfValue // Agregar el token CSRF
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire('Cerrado!', 'El chat ha sido cerrado.', 'success').then(() => {
+                                window.location.href = '<?= Yii::$app->getUrlManager()->createUrl("chat/index") ?>'; // Redirigir a la lista de chats
+                            });
+                        } else {
+                            Swal.fire('Error!', 'No se pudo cerrar el chat. Inténtalo de nuevo.', 'error');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire('Error!', 'Error de conexión. Inténtalo más tarde.', 'error');
+                    }
+                });
+            }
+        });
     });
 
     // Cargar mensajes cada 15 segundos
