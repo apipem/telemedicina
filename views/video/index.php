@@ -25,91 +25,97 @@
         border-color: #ffeeba; /* Amarillo más oscuro */
     }
 </style>
+<?php if (Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger">
+        <?= Yii::$app->session->getFlash('error') ?>
+    </div>
+<?php endif; ?>
 
-<?php if (Yii::$app->user->identity->rol == "Paciente") { ?>
 <div class="container mt-5">
-    <h2>Seleccionar un Médico para Videollamada</h2>
-    <div class="row">
-        <?php foreach ($medicos as $medico) { ?>
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="startVideoCall('<?= $medico->id ?>')">
-                <div class="card-body text-center">
-                    <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
-                    <p class="card-text">Médico General</p>
-                    <button class="btn btn-primary">Solicitar Videollamada</button>
+    <?php if (Yii::$app->user->identity->rol == "Paciente") { ?>
+        <h2>Seleccionar un Médico para Video llamada</h2>
+        <div class="row">
+            <?php foreach ($medicos as $medico) { ?>
+                <?php if ($medico->status != "0") { ?>
+                    <div class="col-md-4">
+                        <div class="card mb-4 <?= $medico->status == "1" ? '' : ($medico->status == "2" ? 'en_pausa' : ''); ?>">
+                            <div class="card-body text-center">
+                                <h5 class="card-title"><?= htmlspecialchars($medico->nombre_completo) ?></h5>
+                                <p class="card-text">Médico General</p>
+                                <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>&action=crear" class="btn btn-primary">Solicitar</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+    <?php } ?>
+
+    <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+        <h2>Seleccionar Estado de Disponibilidad</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4 disponible" onclick="selectStatus(this, '1')">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Disponible</h5>
+                        <p class="card-text">Estás disponible para atender consultas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4 no_disponible" onclick="selectStatus(this, '0')">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">No Disponible</h5>
+                        <p class="card-text">No estás disponible para atender consultas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4 en_pausa" onclick="selectStatus(this, '2')">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">En Pausa</h5>
+                        <p class="card-text">Estás en pausa, puedes volver más tarde.</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="text-center mt-4">
+            <button class="btn btn-primary" id="confirm-button" disabled>Confirmar Estado</button>
+        </div>
+    <?php } ?>
+
+    <h2>Videollamadas Programadas</h2>
+    <div class="row">
+        <?php foreach ($video as $videollamada) { ?>
+            <?php if ($videollamada->estado == "programada") { ?>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars(Yii::$app->user->identity->rol == "Medico" ? $videollamada->paciente->nombre_completo : $videollamada->medico->nombre_completo) ?></h5>
+                            <p class="card-text">Fecha Programada:<?= !empty($videollamada->fecha_programada)? date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)): 'Aún no tiene asignación'?></p>
+                            <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
         <?php } ?>
     </div>
-</div>
-<?php } ?>
 
-<?php if (Yii::$app->user->identity->rol == "Medico") { ?>
-<div class="container mt-5">
-    <h2>Seleccionar su Estado de Disponibilidad</h2>
+    <h2>Videollamadas Cerradas</h2>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 disponible" onclick="selectStatus(this, 'disponible')">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Disponible</h5>
-                    <p class="card-text">Estás disponible para atender consultas.</p>
+        <?php foreach ($videoe as $videollamada) { ?>
+            <?php if ($videollamada->estado == "completada") { ?>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars(Yii::$app->user->identity->rol == "Medico" ? $videollamada->paciente->nombre_completo : $videollamada->medico->nombre_completo) ?></h5>
+                            <p class="card-text">Fecha Programada: <?= date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)) ?></p>
+                            <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Revisar video</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 no_disponible" onclick="selectStatus(this, 'no_disponible')">
-                <div class="card-body text-center">
-                    <h5 class="card-title">No Disponible</h5>
-                    <p class="card-text">No estás disponible para atender consultas.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4 en_pausa" onclick="selectStatus(this, 'en_pausa')">
-                <div class="card-body text-center">
-                    <h5 class="card-title">En Pausa</h5>
-                    <p class="card-text">Estás en pausa, puedes volver más tarde.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="text-center mt-4">
-        <button class="btn btn-primary" id="confirm-button" disabled>Confirmar Estado</button>
-    </div>
-</div>
-<?php } ?>
-
-<div class="container mt-5">
-    <h2>Conversaciones Anteriores</h2>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=john'">
-                <div class="card-body">
-                    <h5 class="card-title">John Doe</h5>
-                    <p class="card-text">Última conversación: 12/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=jane'">
-                <div class="card-body">
-                    <h5 class="card-title">Jane Smith</h5>
-                    <p class="card-text">Última conversación: 11/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card mb-4" onclick="window.location.href='chat.html?user=mike'">
-                <div class="card-body">
-                    <h5 class="card-title">Mike Johnson</h5>
-                    <p class="card-text">Última conversación: 10/09/2024</p>
-                    <button class="btn btn-primary">Reanudar Chat</button>
-                </div>
-            </div>
-        </div>
+            <?php } ?>
+        <?php } ?>
     </div>
 </div>
 
@@ -117,22 +123,31 @@
     let selectedStatus = null;
 
     function selectStatus(cardElement, status) {
-        // Remover selección de otras tarjetas
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-            card.classList.remove('selected');
-        });
-
-        // Marcar la tarjeta seleccionada
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
         cardElement.classList.add('selected');
-
         selectedStatus = status;
-        document.getElementById('confirm-button').disabled = false; // Habilitar el botón de confirmación
+        document.getElementById('confirm-button').disabled = false;
     }
 
     document.getElementById('confirm-button').addEventListener('click', () => {
-        alert(`Estado seleccionado: ${selectedStatus}`);
-        // Aquí puedes agregar la lógica para enviar el estado al servidor
+        $.ajax({
+            url: '<?= Yii::$app->getUrlManager()->createUrl("recurso/estado") ?>',
+            method: 'POST',
+            data: {
+                disponibilidad: selectedStatus,
+                <?= Yii::$app->request->csrfParam ?>: '<?= Yii::$app->request->csrfToken ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Error al cambiar el estado. Inténtalo de nuevo.');
+                }
+            },
+            error: function() {
+                alert('Error de conexión. Inténtalo más tarde.');
+            }
+        });
     });
 </script>
 

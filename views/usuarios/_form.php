@@ -40,7 +40,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'estado')->textInput() ?>
 
-    <?= $form->field($model, 'disponible')->textInput() ?>
+    <?= $form->field($model, 'status')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

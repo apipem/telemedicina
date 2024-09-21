@@ -11,7 +11,7 @@ use Yii;
  * @property int $id_paciente
  * @property int $id_medico
  * @property string|null $url_reunion
- * @property string $fecha_programada
+ * @property string|null $fecha_programada
  * @property string|null $hora_inicio
  * @property string|null $hora_fin
  * @property string|null $estado
@@ -38,7 +38,7 @@ class Videollamadas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_paciente', 'id_medico', 'fecha_programada'], 'required'],
+            [['id_paciente', 'id_medico'], 'required'],
             [['id_paciente', 'id_medico'], 'integer'],
             [['fecha_programada', 'hora_inicio', 'hora_fin', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
             [['estado', 'notas'], 'string'],
