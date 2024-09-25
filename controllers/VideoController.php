@@ -23,7 +23,7 @@ class VideoController extends Controller
             'class' => AccessControl::className(),
             'rules' => [
                 [
-                    'actions' => ['index','video','programar'],
+                    'actions' => ['index','video','programar','guardar'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -62,7 +62,7 @@ class VideoController extends Controller
 
        // Ordenar por fecha de inicio de manera descendente
        $video = $video->all();
-       $videoe = $videoe->orderBy(['hora_fin' => SORT_DESC])->all();
+       $videoe = $videoe->orderBy(['fecha_programada' => SORT_DESC])->all();
 
 
         return $this->render('index', [
@@ -187,5 +187,48 @@ public function decryptBy($chat)
 
        throw new BadRequestHttpException('Petición no válida.');
    }
+
+   public function actionGuardar()
+   {
+       if (Yii::$app->request->isAjax) {
+
+           $videoID = Yii::$app->request->post('videoID');
+           $patientID = Yii::$app->request->post('patientID');
+           $patientName = Yii::$app->request->post('patientName');
+           $email = Yii::$app->request->post('email');
+           $address = Yii::$app->request->post('address');
+           $phone = Yii::$app->request->post('phone');
+           $consultaDetails = Yii::$app->request->post('consultaDetails');
+           $additionalNotes = Yii::$app->request->post('additionalNotes');
+
+           // Validar los datos
+           if (empty($patientName) || empty($email) || empty($address) || empty($phone) || empty($consultaDetails)) {
+               return $this->asJson(['success' => false, 'message' => 'Todos los campos son obligatorios.']);
+           }
+
+           $video = Videollamadas::findOne($videoID);
+           $user = Usuarios::findOne($patientID);
+           if (!$video && !$user) {
+               return $this->asJson(['success' => false, 'message' => 'Error al consultar datos.']);
+           }
+
+           $video->notas = $additionalNotes;
+           $video->detalles_consulta = $consultaDetails;
+           $video->estado = "completada";
+           $user->correo_electronico = $email;
+           $user->telefono =$phone;
+           $user->direccion = $address;
+
+           // Guardar el modelo
+           if ($video->save() && $user->save()) {
+               return $this->asJson(['success' => true, 'message' => 'Consulta guardada exitosamente.']);
+           } else {
+               return $this->asJson(['success' => false, 'message' => 'Error al guardar la consulta: ' . implode(', ', $consulta->getErrors())]);
+           }
+       }
+
+       throw new BadRequestHttpException('Petición no válida.');
+   }
+
 
 }

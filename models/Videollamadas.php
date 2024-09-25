@@ -12,10 +12,9 @@ use Yii;
  * @property int $id_medico
  * @property string|null $url_reunion
  * @property string|null $fecha_programada
- * @property string|null $hora_inicio
- * @property string|null $hora_fin
- * @property string|null $estado
  * @property string|null $notas
+ * @property string|null $estado
+ * @property string|null $detalles_consulta
  * @property string|null $fecha_creacion
  * @property string|null $fecha_actualizacion
  *
@@ -40,8 +39,8 @@ class Videollamadas extends \yii\db\ActiveRecord
         return [
             [['id_paciente', 'id_medico'], 'required'],
             [['id_paciente', 'id_medico'], 'integer'],
-            [['fecha_programada', 'hora_inicio', 'hora_fin', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
-            [['estado', 'notas'], 'string'],
+            [['fecha_programada', 'fecha_creacion', 'fecha_actualizacion'], 'safe'],
+            [['notas', 'estado', 'detalles_consulta'], 'string'],
             [['url_reunion'], 'string', 'max' => 255],
             [['id_paciente'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::class, 'targetAttribute' => ['id_paciente' => 'id']],
             [['id_medico'], 'exist', 'skipOnError' => true, 'targetClass' => Usuarios::class, 'targetAttribute' => ['id_medico' => 'id']],
@@ -59,10 +58,9 @@ class Videollamadas extends \yii\db\ActiveRecord
             'id_medico' => 'Id Medico',
             'url_reunion' => 'Url Reunion',
             'fecha_programada' => 'Fecha Programada',
-            'hora_inicio' => 'Hora Inicio',
-            'hora_fin' => 'Hora Fin',
-            'estado' => 'Estado',
             'notas' => 'Notas',
+            'estado' => 'Estado',
+            'detalles_consulta' => 'Detalles Consulta',
             'fecha_creacion' => 'Fecha Creacion',
             'fecha_actualizacion' => 'Fecha Actualizacion',
         ];

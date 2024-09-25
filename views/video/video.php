@@ -26,50 +26,58 @@
                         </button>
                     </div>
                 <?php endif; ?>
-                <div class="col">
-                    <button class="btn btn-primary btn-lg mb-3" id="scheduleButton">
-                        Programar
-                    </button>
-                </div>
+                <?php if ($video->estado != "completada"): ?>
+                    <div class="col">
+                        <button class="btn btn-primary btn-lg mb-3" id="scheduleButton">
+                            Programar
+                        </button>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
-
     </div>
 
-   <form id="consulta-form" class="border p-4 rounded shadow-sm">
-       <h2 class="text-center mb-4">Detalles de la Consulta</h2>
-       <div class="row mb-3">
-           <div class="col-md-6">
-               <label for="patientName" class="form-label">Nombre del Paciente</label>
-               <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->nombre_completo ?? '') ?>" id="patientName" readonly required>
-           </div>
-           <div class="col-md-6">
-               <label for="patientName" class="form-label">Correo</label>
-               <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->correo_electronico ?? '') ?>" id="patientName"  required>
-           </div>
-       </div>
-       <div class="row mb-3">
-           <div class="col-md-6">
-               <label for="patientName" class="form-label">Direccion</label>
-               <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->direccion ?? '') ?>" id="patientName"  required>
-           </div>
+    <form id="consulta-form" class="border p-4 rounded shadow-sm">
+        <h2 class="text-center mb-4">Detalles de la Consulta</h2>
+        <div class="row mb-3">
             <div class="col-md-6">
-              <label for="patientName" class="form-label">Celular</label>
-              <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->telefono ?? '') ?>" id="patientName"  required>
-          </div>
-           <div class="col-md-12">
-               <label for="consultaDetails" class="form-label">Detalles de la Consulta</label>
-               <textarea class="form-control" id="consultaDetails" rows="4" placeholder="Escriba los detalles de la consulta aquí..." required></textarea>
-           </div>
-       </div>
-       <div class="mb-3">
-           <label for="additionalNotes" class="form-label">Notas Adicionales</label>
-           <textarea class="form-control" id="additionalNotes" rows="2" placeholder="Notas adicionales (opcional)"></textarea>
-       </div>
-       <div class="text-center mt-4">
-           <button type="submit" class="btn btn-primary btn-lg">Guardar Consulta</button>
-       </div>
-   </form>
+                <label for="patientName" class="form-label">Nombre del Paciente</label>
+                <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->nombre_completo ?? '') ?>" id="patientName" readonly required>
+                <input type="hidden" class="form-control" value="<?= htmlspecialchars($video->paciente->id ?? '') ?>" id="patientID" readonly >
+                <input type="hidden" class="form-control" value="<?= htmlspecialchars($video->id ?? '') ?>" id="videoID" readonly >
+            </div>
+            <div class="col-md-6">
+                <label for="patientEmail" class="form-label">Correo</label>
+                <input type="email" class="form-control" value="<?= htmlspecialchars($video->paciente->correo_electronico ?? '') ?>" id="patientEmail" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="patientAddress" class="form-label">Dirección</label>
+                <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->direccion ?? '') ?>" id="patientAddress" required>
+            </div>
+            <div class="col-md-6">
+                <label for="patientPhone" class="form-label">Celular</label>
+                <input type="text" class="form-control" value="<?= htmlspecialchars($video->paciente->telefono ?? '') ?>" id="patientPhone" required>
+            </div>
+            <div class="col-md-12">
+                <label for="consultaDetails" class="form-label">Detalles de la Consulta</label>
+                <textarea class="form-control" id="consultaDetails" rows="4" placeholder="Escriba los detalles de la consulta aquí..." required><?= htmlspecialchars($video->detalles_consulta ?? '') ?></textarea>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="additionalNotes" class="form-label">Notas Adicionales</label>
+            <textarea class="form-control" id="additionalNotes" rows="2" placeholder="Notas adicionales (opcional)"><?= htmlspecialchars($video->notas ?? '') ?></textarea>
+        </div>
+        <?php if ($video->estado != "completada"): ?>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Guardar Consulta</button>
+            </div>
+        <?php endif; ?>
+         <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary" id="closeButton">Cerrar</button>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -120,23 +128,63 @@
         });
     });
 
-    document.getElementById('consulta-form').addEventListener('submit', function(event) {
+    $('#consulta-form').on('submit', function(event) {
         event.preventDefault();
 
-        // Aquí puedes agregar lógica para enviar los datos al servidor usando AJAX
+        const videoID = $('#videoID').val();
+        const patientID = $('#patientID').val();
+        const patientName = $('#patientName').val();
+        const email = $('#patientEmail').val();
+        const address = $('#patientAddress').val();
+        const phone = $('#patientPhone').val();
+        const consultaDetails = $('#consultaDetails').val();
+        const additionalNotes = $('#additionalNotes').val();
 
-        Swal.fire({
-            icon: 'success',
-            title: 'Consulta Guardada',
-            text: 'Los detalles de la consulta han sido guardados exitosamente.',
-            confirmButtonText: 'Aceptar'
+        $.ajax({
+            url: '<?= Yii::$app->getUrlManager()->createUrl("video/guardar") ?>',
+            method: 'POST',
+            data: {
+                videoID: videoID,
+                patientID: patientID,
+                patientName: patientName,
+                email: email,
+                address: address,
+                phone: phone,
+                consultaDetails: consultaDetails,
+                additionalNotes: additionalNotes,
+                <?= Yii::$app->request->csrfParam ?>: '<?= Yii::$app->request->csrfToken ?>'
+            },
+            success: function(response) {
+                if (response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Consulta Guardada',
+                        text: 'Los detalles de la consulta han sido guardados exitosamente.',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                                  window.location.href = '<?= Yii::$app->getUrlManager()->createUrl("video/index") ?>';
+                              });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: response.message || 'Ocurrió un error al guardar la consulta.',
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error de conexión. Inténtalo más tarde.',
+                });
+            }
         });
     });
 </script>
 
 <style>
     .container {
-
         margin: auto;
     }
     .form-control:focus {
@@ -173,7 +221,44 @@
             <?php endif; ?>
         </p>
     </div>
-    <h3>Detalles de la Consulta</h3>
+    <div class="container mt-4">
+        <h3 class="text-center mb-4">Detalles de la Consulta</h3>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="consultaDetails" class="form-label">Detalles de la Consulta</label>
+                <textarea class="form-control" id="consultaDetails" rows="4" readonly required><?= htmlspecialchars($video->detalles_consulta ?? '') ?></textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="additionalNotes" class="form-label">Notas Adicionales</label>
+                <textarea class="form-control" id="additionalNotes" rows="2" readonly ><?= htmlspecialchars($video->notas ?? '') ?></textarea>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-secondary" id="closeButton">Cerrar</button>
+        </div>
+    </div>
+
+
+    <style>
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+
+
 </div>
 
 <script>
@@ -184,3 +269,27 @@
 </script>
 
 <?php } ?>
+<?php if ($video->estado == "completada"): ?>
+<script>
+    $(document).ready(function() {
+        // Selecciona todos los inputs dentro del formulario
+        $('input').each(function() {
+            $(this).attr('readonly', true);
+        });
+
+        // También puedes aplicar la propiedad readonly a los textareas si es necesario
+        $('textarea').each(function() {
+            $(this).attr('readonly', true);
+        });
+    });
+</script>
+<?php endif; ?>
+<script>
+    $(document).ready(function() {
+        // Lógica para cerrar o ocultar el modal, si se desea
+        $('#closeButton').on('click', function() {
+            // Aquí puedes agregar la lógica para cerrar el modal o redirigir a otra página
+            window.history.back(); // Ejemplo de volver a la página anterior
+        });
+    });
+</script>

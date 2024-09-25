@@ -110,7 +110,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars(Yii::$app->user->identity->rol == "Medico" ? $videollamada->paciente->nombre_completo : $videollamada->medico->nombre_completo) ?></h5>
                             <p class="card-text">Fecha Programada: <?= date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)) ?></p>
-                            <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Revisar video</a>
+                            <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Ver</a>
                         </div>
                     </div>
                 </div>
