@@ -17,9 +17,23 @@
                        value="<?= $video->fecha_programada ? date('Y-m-d\TH:i', strtotime($video->fecha_programada)) : '' ?>" required>
             </div>
         </div>
-        <div class="text-center">
-            <button class="btn btn-primary" id="scheduleButton">Programar</button>
+        <div class="container text-center mt-4">
+            <div class="row">
+                <?php if (!empty($video->url_reunion)): ?>
+                    <div class="col">
+                        <button class="btn btn-success btn-lg" id="joinMeetButton" onclick="window.open('<?= htmlspecialchars($video->url_reunion) ?>', '_blank')">
+                            Unirse a la Videollamada
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <div class="col">
+                    <button class="btn btn-primary btn-lg mb-3" id="scheduleButton">
+                        Programar
+                    </button>
+                </div>
+            </div>
         </div>
+
     </div>
 
    <form id="consulta-form" class="border p-4 rounded shadow-sm">
