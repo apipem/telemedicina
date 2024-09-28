@@ -25,11 +25,22 @@ $this->title = 'Subida de Documentos';
                         <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
 
                         <div class="form-group">
-                            <label for="medico">Selecciona un Médico</label>
+                            <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
+                                <label for="medico">Selecciona un Paciente</label>
+                            <?php elseif (Yii::$app->user->identity->rol == "Paciente"): ?>
+                                <label for="medico">Selecciona un Médico</label>
+                            <?php endif; ?>
                             <select name="ArchivosSubidos[medico]" class="form-control" id="medico">
-                                <option value="">Selecciona un Médico</option>
+                                <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
+                                    <option value="">Selecciona un Paciente</option>
+                                <?php elseif (Yii::$app->user->identity->rol == "Paciente"): ?>
+                                    <option value="">Selecciona un Médico</option>
+                                <?php endif; ?>
+
                                 <?php foreach ($users as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= Html::encode($nombre) ?></option>
+                                    <?php if ($nombre != "admin"): ?>
+                                        <option value="<?= $id ?>"><?= Html::encode($nombre) ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -40,7 +51,7 @@ $this->title = 'Subida de Documentos';
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Descripcion</label>
+                            <label for="description">Descripción</label>
                             <input type="input" name="ArchivosSubidos[description]" id="description" class="form-control">
                         </div>
 
@@ -62,20 +73,83 @@ $this->title = 'Subida de Documentos';
                 </div>
                 <div class="card-body">
                     <?php if (!empty($archivos)): ?>
-                        <ul class="list-group">
-                            <?php foreach ($archivos as $archivo): ?>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <?= Html::encode(basename($archivo->ruta_archivo)) ?>
-                                    <span class="badge badge-primary"><?= Html::encode($archivo->medico0->nombre_completo) ?></span>
-                                    <?= Html::a('Descargar', Yii::getAlias('@web/' . $archivo->ruta_archivo), [
-                                        'class' => 'btn btn-secondary btn-sm ml-3',
-                                        'target' => '_blank'
-                                    ]) ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Archivo</th>
+                                    <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
+                                        <th>Paciente</th>
+                                    <?php elseif (Yii::$app->user->identity->rol == "Paciente"): ?>
+                                        <th>Médico</th>
+                                    <?php endif; ?>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($archivos as $archivo): ?>
+                                    <tr>
+                                        <td><?= Html::encode(basename($archivo->ruta_archivo)) ?></td>
+                                        <td><?= Html::encode($archivo->medico0->nombre_completo) ?></td>
+                                        <td><?= Html::encode($archivo->descripcion) ?></td>
+                                        <td>
+                                            <?= Html::a('Descargar', Yii::getAlias('@web/' . $archivo->ruta_archivo), [
+                                                'class' => 'btn btn-secondary btn-sm',
+                                                'target' => '_blank'
+                                            ]) ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     <?php else: ?>
                         <p>No has subido archivos aún.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Archivos Recibidos -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Archivos Recibidos</h5>
+                </div>
+                <div class="card-body">
+                    <?php if (!empty($archivosre)): ?>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre del Archivo</th>
+                                    <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
+                                        <th>Paciente</th>
+                                    <?php elseif (Yii::$app->user->identity->rol == "Paciente"): ?>
+                                        <th>Médico</th>
+                                    <?php endif; ?>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($archivosre as $archivo): ?>
+                                    <tr>
+                                        <td><?= Html::encode(basename($archivo->ruta_archivo)) ?></td>
+                                        <td><?= Html::encode($archivo->paciente0->nombre_completo) ?></td>
+                                        <td><?= Html::encode($archivo->descripcion) ?></td>
+                                        <td>
+                                            <?= Html::a('Descargar', Yii::getAlias('@web/' . $archivo->ruta_archivo), [
+                                                'class' => 'btn btn-secondary btn-sm',
+                                                'target' => '_blank'
+                                            ]) ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>No tiene archivos aún.</p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -158,5 +232,4 @@ $(document).ready(function() {
 
     });
 });
-
 </script>
