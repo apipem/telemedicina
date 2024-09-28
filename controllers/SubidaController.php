@@ -42,14 +42,17 @@ class SubidaController extends Controller
         // Obtener usuarios según el rol del usuario
         $users = Usuarios::find();
         $archivos = ArchivosSubidos::find();
+        $archivosre = ArchivosSubidos::find();
 
         // Filtrar según el rol del usuario
         if (Yii::$app->user->identity->rol == "Paciente") {
             $users->where(['rol' => "Medico"]);
-            $archivos->where(['medico' => Yii::$app->user->id]) ;
+            $archivos->where(['paciente' => Yii::$app->user->id]) ;
+            $archivosre->where(['medico' => Yii::$app->user->id]) ;
         } elseif (Yii::$app->user->identity->rol == "Medico") {
             $users->where(['rol' => "Paciente"]);
             $archivos->where(['paciente' => Yii::$app->user->id]) ;
+            $archivosre->where(['medico' => Yii::$app->user->id]) ;
         }
 
         // Obtener usuarios y convertir a un array
@@ -60,11 +63,13 @@ class SubidaController extends Controller
 
 
          $archivos = $archivos->all();
+         $archivosre = $archivosre->all();
 
         return $this->render('index', [
             'model' => $model,
             'users' => $users,
-            'archivos' => $archivos, // Pasa la variable a la vista
+            'archivos' => $archivos,
+            'archivosre' => $archivosre,
         ]);
     }
 
