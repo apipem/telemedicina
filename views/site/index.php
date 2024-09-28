@@ -146,7 +146,7 @@ $(document).ready(function() {
         $session = Yii::$app->session;
         if ($session->isActive && !Yii::$app->user->isGuest): ?>
             <h1 class="display-4 ">Bienvenido, <?= Html::encode(Yii::$app->user->identity->nombre_completo) ?>!</h1>
-            <p class="lead mt-3 text-muted">
+            <p class="lead mt-3">
                 Bienvenido a nuestra plataforma de telemedicina, un entorno diseñado para proporcionar atención médica de alta calidad mediante tecnologías avanzadas de consulta remota. Acceda de manera eficiente, segura y confidencial a profesionales de la salud, optimizando su bienestar en todo momento.
             </p>
         <?php else: ?>
@@ -162,8 +162,8 @@ $(document).ready(function() {
         <div class="col-md-8">
             <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h5 class="card-title">¿Cómo Funciona?</h5>
-                    <p class="card-text">
+                    <h5 class="card-title text-muted">¿Cómo Funciona?</h5>
+                    <p class="card-text text-muted">
                         Nuestra plataforma le permite conectar con médicos a través de consultas virtuales. Simplemente inicie sesión, seleccione un profesional y programe su cita en línea.
                     </p>
                 </div>

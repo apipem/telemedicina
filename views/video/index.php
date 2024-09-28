@@ -39,9 +39,9 @@
                 <?php if ($medico->status != "0") { ?>
                     <div class="col-md-4">
                         <div class="card mb-4 <?= $medico->status == "1" ? '' : ($medico->status == "2" ? 'en_pausa' : ''); ?>">
-                            <div class="card-body text-center">
-                                <h5 class="card-title"><?= htmlspecialchars($medico->nombre_completo) ?></h5>
-                                <p class="card-text">Médico General</p>
+                            <div class="card-body text-center text-muted">
+                                <h5 class="card-title text-muted"><?= htmlspecialchars($medico->nombre_completo) ?></h5>
+                                <p class="card-text text-muted">Médico General</p>
                                 <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>&action=crear" class="btn btn-primary">Solicitar</a>
                             </div>
                         </div>
@@ -53,12 +53,12 @@
 
     <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
         <h2>Seleccionar Estado de Disponibilidad</h2>
-        <div class="row">
+        <div class="row text-muted">
             <div class="col-md-4">
                 <div class="card mb-4 disponible" onclick="selectStatus(this, '1')">
                     <div class="card-body text-center">
                         <h5 class="card-title">Disponible</h5>
-                        <p class="card-text">Estás disponible para atender consultas.</p>
+                        <p class="card-text text-muted">Estás disponible para atender consultas.</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                 <div class="card mb-4 no_disponible" onclick="selectStatus(this, '0')">
                     <div class="card-body text-center">
                         <h5 class="card-title">No Disponible</h5>
-                        <p class="card-text">No estás disponible para atender consultas.</p>
+                        <p class="card-text text-muted">No estás disponible para atender consultas.</p>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 <div class="card mb-4 en_pausa" onclick="selectStatus(this, '2')">
                     <div class="card-body text-center">
                         <h5 class="card-title">En Pausa</h5>
-                        <p class="card-text">Estás en pausa, puedes volver más tarde.</p>
+                        <p class="card-text text-muted">Estás en pausa, puedes volver más tarde.</p>
                     </div>
                 </div>
             </div>
@@ -88,11 +88,11 @@
     <div class="row">
         <?php foreach ($video as $videollamada) { ?>
             <?php if ($videollamada->estado == "programada") { ?>
-                <div class="col-md-4">
-                    <div class="card mb-4">
+                <div class="col-md-4 ">
+                    <div class="card mb-4 text-muted">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars(Yii::$app->user->identity->rol == "Medico" ? $videollamada->paciente->nombre_completo : $videollamada->medico->nombre_completo) ?></h5>
-                            <p class="card-text">Fecha Programada:<?= !empty($videollamada->fecha_programada)? date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)): 'Aún no tiene asignación'?></p>
+                            <p class="card-text text-muted">Fecha Programada:<?= !empty($videollamada->fecha_programada)? date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)): 'Aún no tiene asignación'?></p>
                             <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Ingresar</a>
                         </div>
                     </div>
@@ -106,10 +106,10 @@
         <?php foreach ($videoe as $videollamada) { ?>
             <?php if ($videollamada->estado == "completada") { ?>
                 <div class="col-md-4">
-                    <div class="card mb-4">
+                    <div class="card mb-4 text-muted">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars(Yii::$app->user->identity->rol == "Medico" ? $videollamada->paciente->nombre_completo : $videollamada->medico->nombre_completo) ?></h5>
-                            <p class="card-text">Fecha Programada: <?= date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)) ?></p>
+                            <p class="card-text text-muted">Fecha Programada: <?= date('d/m/Y h:i A', strtotime($videollamada->fecha_programada)) ?></p>
                             <a href="video?video=<?= urlencode(Yii::$app->security->encryptByKey(Yii::$app->user->identity->rol == "Medico" ? $videollamada->id_paciente : $videollamada->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($videollamada->id) ?>" class="btn btn-primary">Ver</a>
                         </div>
                     </div>

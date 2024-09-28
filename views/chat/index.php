@@ -35,8 +35,8 @@
                 <div class="col-md-4">
                     <div class="card mb-4 <?php echo $medico->status == "1" ? '' : ($medico->status == "2" ? 'en_pausa' : ''); ?>">
                         <div class="card-body text-center">
-                            <h5 class="card-title"><?= $medico->nombre_completo ?></h5>
-                            <p class="card-text">Médico General</p>
+                            <h5 class="card-title text-muted"><?= $medico->nombre_completo ?></h5>
+                            <p class="card-text text-muted">Médico General</p>
                             <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($medico->id, 'telem')) ?>&action=crear" class="btn btn-primary">Chatear</a>
                         </div>
                     </div>
@@ -54,24 +54,24 @@
         <div class="col-md-4">
             <div class="card mb-4 disponible" onclick="selectStatus(this, '1')">
                 <div class="card-body text-center">
-                    <h5 class="card-title">Disponible</h5>
-                    <p class="card-text">Estás disponible para atender consultas.</p>
+                    <h5 class="card-title text-muted">Disponible</h5>
+                    <p class="card-text text-muted">Estás disponible para atender consultas.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card mb-4 no_disponible" onclick="selectStatus(this, '0')">
                 <div class="card-body text-center">
-                    <h5 class="card-title">No Disponible</h5>
-                    <p class="card-text">No estás disponible para atender consultas.</p>
+                    <h5 class="card-title text-muted">No Disponible</h5>
+                    <p class="card-text text-muted">No estás disponible para atender consultas.</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card mb-4 en_pausa" onclick="selectStatus(this, '2')">
                 <div class="card-body text-center">
-                    <h5 class="card-title">En Pausa</h5>
-                    <p class="card-text">Estás en pausa, puedes volver más tarde.</p>
+                    <h5 class="card-title text-muted">En Pausa</h5>
+                    <p class="card-text text-muted">Estás en pausa, puedes volver más tarde.</p>
                 </div>
             </div>
         </div>
@@ -89,14 +89,14 @@
             <?php if ($chat->estado == "activo") { ?>
             <div class="col-md-4">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body text-muted">
                         <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
-                            <p class="card-text">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
+                            <p class="card-text text-muted">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
                             <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_paciente ?? $chat->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($chat->id) ?>" class="btn btn-primary">Reanudar Chat</a>
                         <?php } else { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
-                            <p class="card-text">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
+                            <p class="card-text text-muted">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
                             <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_medico ?? $chat->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($chat->id) ?>" class="btn btn-primary">Reanudar Chat</a>
                         <?php } ?>
                     </div>
@@ -112,17 +112,17 @@
         <?php foreach ($chatce as $chat) { ?>
             <?php if ($chat->estado == "completado") { ?>
             <div class="col-md-4">
-                <div class="card mb-4">
+                <div class="card mb-4 text-muted">
                     <div class="card-body">
                          <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->paciente->nombre_completo ?? 'Desconocido') ?></h5>
-                            <p class="card-text">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
-                                                        <p class="card-text">Fecha Final: <?= date('d/m/Y h:i A', strtotime($chat->fecha_fin)) ?></p>
+                            <p class="card-text text-muted">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
+                            <p class="card-text text-muted">Fecha Final: <?= date('d/m/Y h:i A', strtotime($chat->fecha_fin)) ?></p>
                             <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_paciente ?? $chat->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($chat->id) ?>" class="btn btn-primary">Revisar Chat</a>
                         <?php } else { ?>
                             <h5 class="card-title"><?= htmlspecialchars($chat->medico->nombre_completo ?? 'Desconocido') ?></h5>
-                            <p class="card-text">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
-                            <p class="card-text">Fecha Final: <?= date('d/m/Y h:i A', strtotime($chat->fecha_fin)) ?></p>
+                            <p class="card-text text-muted">Fecha Inicial: <?= date('d/m/Y h:i A', strtotime($chat->fecha_inicio)) ?></p>
+                            <p class="card-text text-muted">Fecha Final: <?= date('d/m/Y h:i A', strtotime($chat->fecha_fin)) ?></p>
                             <a href="chat?chat=<?= urlencode(Yii::$app->security->encryptByKey($chat->id_medico ?? $chat->id_medico, 'telem')) ?>&action=consultar&chatId=<?= urlencode($chat->id) ?>" class="btn btn-primary">Revisar Chat</a>
                         <?php } ?>
                     </div>
