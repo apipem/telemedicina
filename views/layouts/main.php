@@ -35,6 +35,36 @@ if ($session->isActive && isset(Yii::$app->user->identity->id)) {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link rel="stylesheet" href="<?= Yii::$app->getUrlManager()->createUrl('css/main.css') ?>">
+        <style>
+            .bg-image {
+                background-image: url('<?= \yii\helpers\Url::to('@web/images/banner-medico-medico-gafas.jpg') ?>'); /* Ruta de la imagen */
+                background-size: cover; /* Asegura que la imagen cubra todo el contenedor */
+                background-position: center; /* Centra la imagen */
+                position: relative; /* Necesario para el overlay */
+                min-height: 100vh; /* Ajusta la altura según necesites */
+                color: white; /* Cambia el color del texto a blanco */
+            }
+
+            .bg-image p {
+                color: white; /* Asegura que todos los textos en <p> sean blancos */
+            }
+
+            .bg-image::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5); /* Fondo negro con 50% de opacidad */
+                z-index: 1; /* Asegura que esté debajo del contenido */
+            }
+
+            .row {
+                position: relative; /* Para asegurar que el contenido esté encima del overlay */
+                z-index: 2; /* Asegura que el contenido se vea por encima del overlay */
+            }
+        </style>
     </head>
 
     <body class="">
@@ -52,7 +82,7 @@ if ($session->isActive && isset(Yii::$app->user->identity->id)) {
             <?php $this->beginBody(); ?>
 
             <!-- Main content -->
-            <div class="container">
+            <div class="container bg-image">
                 <div class="row">
                     <div class="col">
                         <?php echo $content ?>
