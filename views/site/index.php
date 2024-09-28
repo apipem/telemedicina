@@ -1,3 +1,8 @@
+<?php
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+?>
+
  <?php
  $session = Yii::$app->session;
  if ($session->isActive && !Yii::$app->user->isGuest) {
@@ -137,58 +142,47 @@ $(document).ready(function() {
 
 <div class="container mt-5">
     <div class="text-center mb-4">
-
         <?php
         $session = Yii::$app->session;
-        if ($session->isActive && !Yii::$app->user->isGuest) {
-            ?>
-            <h1>Bienvenido <?= Yii::$app->user->identity->rol ?></h1>
-        <?php } ?>
-
+        if ($session->isActive && !Yii::$app->user->isGuest): ?>
+            <h1 class="display-4 ">Bienvenido, <?= Html::encode(Yii::$app->user->identity->nombre_completo) ?>!</h1>
+            <p class="lead mt-3 text-muted">
+                Bienvenido a nuestra plataforma de telemedicina, un entorno diseñado para proporcionar atención médica de alta calidad mediante tecnologías avanzadas de consulta remota. Acceda de manera eficiente, segura y confidencial a profesionales de la salud, optimizando su bienestar en todo momento.
+            </p>
+        <?php else: ?>
+            <h1 class="display-4 text-warning">Acceso Denegado</h1>
+            <p class="lead mt-3 text-muted">
+                Por favor, inicie sesión para acceder a nuestras funcionalidades de telemedicina.
+            </p>
+            <a href="<?= Yii::$app->getUrlManager()->createUrl('site/login') ?>" class="btn btn-primary btn-lg mt-4">Iniciar sesión</a>
+        <?php endif; ?>
     </div>
 
-    <div class="row justify-content-center mb-4">
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/video-llamada') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-video"></i> Video Llamada
-            </a>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h5 class="card-title">¿Cómo Funciona?</h5>
+                    <p class="card-text">
+                        Nuestra plataforma le permite conectar con médicos a través de consultas virtuales. Simplemente inicie sesión, seleccione un profesional y programe su cita en línea.
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/chat-en-linea') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-comments"></i> Chat en Línea
-            </a>
-        </div>
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/subir-archivos') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-upload"></i> Subir Archivos
-            </a>
-        </div>
-
     </div>
 
-    <div class="row justify-content-center mb-4">
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/correo-electronico') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-envelope"></i> Correo Electrónico
-            </a>
-        </div>
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/perfil-usuario') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-user"></i> Perfil del Usuario
-            </a>
-        </div>
-        <!--
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/configuracion') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-cogs"></i> Configuración
-            </a>
-        </div>
-        -->
-        <div class="col-3">
-            <a href="<?= Yii::$app->getUrlManager()->createUrl('site/logout') ?>" class="btn btn-secondary btn-lg btn-block">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </a>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 text-center">
+            <h5 class="mt-4">Beneficios de Usar Nuestra Plataforma:</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">👩‍⚕️ Atención médica accesible desde cualquier lugar.</li>
+                <li class="list-group-item">🔒 Seguridad y confidencialidad garantizadas.</li>
+                <li class="list-group-item">⏱️ Programación flexible de citas.</li>
+                <li class="list-group-item">💬 Consultas en tiempo real con especialistas.</li>
+            </ul>
         </div>
     </div>
 </div>
+
+
 <?php } ?>
