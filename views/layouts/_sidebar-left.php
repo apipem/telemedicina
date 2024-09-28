@@ -54,7 +54,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/subir-archivos') ?>" class="nav-link">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('subida/index') ?>" class="nav-link">
                         <i class="nav-icon fas fa-upload"></i>
                         <p>Subir Archivos</p>
                     </a>
