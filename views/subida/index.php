@@ -15,7 +15,7 @@ $this->title = 'Subida de Documentos';
     <?php endif; ?>
 
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-11">
             <div class="card">
                 <div class="card-header text-muted">
                     <h5>Selecciona los documentos a subir</h5>
@@ -66,7 +66,7 @@ $this->title = 'Subida de Documentos';
 
     <!-- Sección de Archivos Subidos -->
     <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
+        <div class="col-md-11">
             <div class="card">
                 <div class="card-header text-muted">
                     <h5>Archivos Subidos</h5>
@@ -112,7 +112,7 @@ $this->title = 'Subida de Documentos';
 
     <!-- Sección de Archivos Recibidos -->
     <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
+        <div class="col-md-11">
             <div class="card">
                 <div class="card-header text-muted">
                     <h5>Archivos Recibidos</h5>

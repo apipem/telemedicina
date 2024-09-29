@@ -78,12 +78,3 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-
-<style>
-    .form-group {
-        margin-bottom: 1.5rem; /* Espacio entre grupos de campos */
-    }
-    .text-center {
-        margin: 1.5rem 0; /* Espacio vertical para títulos */
-    }
-</style>

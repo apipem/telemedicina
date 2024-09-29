@@ -25,11 +25,3 @@ $this->params['breadcrumbs'][] = 'Actualizar';
 
 </div>
 
-<style>
-    .text-center {
-        margin-bottom: 1.5rem; /* Espacio debajo del título */
-    }
-    .alert {
-        margin-bottom: 1.5rem; /* Espacio debajo de la alerta */
-    }
-</style>

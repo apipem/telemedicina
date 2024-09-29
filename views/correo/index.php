@@ -24,11 +24,10 @@ $this->title = 'Usuarios Disponibles';
     .btn-email:hover {
         background-color: #218838;
     }
-    .container {
-        margin-top: 50px;
-    }
+
 </style>
 
+    <p></p>
 <div class="container">
     <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
         <h2 class="text-center mb-4">Contacto de pacientes</h2>
