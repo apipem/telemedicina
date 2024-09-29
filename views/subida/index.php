@@ -73,7 +73,7 @@ $this->title = 'Subida de Documentos';
                 </div>
                 <div class="card-body">
                     <?php if (!empty($archivos)): ?>
-                        <table class="table table-striped">
+                        <table class="table table-striped text-muted">
                             <thead>
                                 <tr>
                                     <th>Nombre del Archivo</th>
@@ -86,7 +86,7 @@ $this->title = 'Subida de Documentos';
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="text-muted">
                                 <?php foreach ($archivos as $archivo): ?>
                                     <tr>
                                         <td><?= Html::encode(basename($archivo->ruta_archivo)) ?></td>
@@ -119,7 +119,7 @@ $this->title = 'Subida de Documentos';
                 </div>
                 <div class="card-body">
                     <?php if (!empty($archivosre)): ?>
-                        <table class="table table-striped ">
+                        <table class="table table-striped text-muted">
                             <thead>
                                 <tr>
                                     <th>Nombre del Archivo</th>
