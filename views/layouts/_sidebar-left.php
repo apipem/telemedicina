@@ -13,8 +13,8 @@
                 <img src="https://picsum.photos/200/200?random" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block text-white"><?= Yii::$app->user->identity->nombre_completo?></a>
-                <span class="text-sm text-white"><?= Yii::$app->user->identity->rol?></span>
+                <a href="#" class="d-block text-white"><?= Yii::$app->user->identity->nombre_completo ?></a>
+                <span class="text-sm text-white"><?= Yii::$app->user->identity->rol ?></span>
             </div>
         </div>
 
@@ -71,26 +71,27 @@
                         <p>Perfil del Usuario</p>
                     </a>
                 </li>
+
                 <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('hl/index') ?>" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>HL7</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-user-check"></i>
-                        <p>
-                            Estado de Disponibilidad:
-                            <span id="availability-status" class="
-                                <?= Yii::$app->user->identity->status == 1 ? 'text-success' : (Yii::$app->user->identity->status == 0 ? 'text-danger' : 'text-warning') ?>">
-                                <?= Yii::$app->user->identity->status == 1 ? 'Disponible' : (Yii::$app->user->identity->status == 0 ? 'No Disponible' : 'En Pausa') ?>
-                            </span>
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="<?= Yii::$app->getUrlManager()->createUrl('hl/index') ?>" class="nav-link">
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>HL7</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-user-check"></i>
+                            <p>
+                                Estado de Disponibilidad:
+                                <span id="availability-status" class="<?= Yii::$app->user->identity->status == 1 ? 'text-success' : (Yii::$app->user->identity->status == 0 ? 'text-danger' : 'text-warning') ?>">
+                                    <?= Yii::$app->user->identity->status == 1 ? 'Disponible' : (Yii::$app->user->identity->status == 0 ? 'No Disponible' : 'En Pausa') ?>
+                                </span>
+                            </p>
+                        </a>
+                    </li>
                 <?php } ?>
+
                 <li class="nav-item">
                     <a href="<?= Yii::$app->getUrlManager()->createUrl('site/logout') ?>" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
