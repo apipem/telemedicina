@@ -4,9 +4,12 @@ use yii\helpers\Url;
 
 $this->title = 'Generar Mensajes HL7';
 ?>
-<p></p>
-<style>
 
+<!-- Incluyendo el CSS y JS de SweetAlert2 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
     .card {
         border: 1px solid #28a745; /* Color verde para el borde */
         border-radius: 8px;
@@ -24,7 +27,6 @@ $this->title = 'Generar Mensajes HL7';
     .message-options button:last-child {
         margin-right: 0; /* Eliminar margen derecho del último botón */
     }
-
 </style>
 
 <div class="container">
@@ -35,7 +37,8 @@ $this->title = 'Generar Mensajes HL7';
             <h5>Seleccionar Paciente</h5>
         </div>
         <div class="card-body">
-            <form id="message-form" method="post" action="<?= Url::to(['hl/generate']) ?>">
+            <form id="message-form" method="post" action="">
+                <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken ?>"> <!-- Agregado manualmente el token CSRF -->
                 <div class="form-group">
                     <select id="patient-select" class="form-control" name="patientId" required>
                         <option value="">Escribe para filtrar y seleccionar un paciente</option>
@@ -47,10 +50,11 @@ $this->title = 'Generar Mensajes HL7';
                     </select>
                 </div>
                 <div class="message-options">
-                    <button type="button" class="btn btn-success" id="adt-button">Generar ADT (Admit/Discharge/Transfer)</button>
-                    <button type="button" class="btn btn-success" id="orm-button">Generar ORM (Order Entry)</button>
-                    <button type="button" class="btn btn-success" id="rsp-button">Generar RSP (Response)</button>
+                    <button type="submit" class="btn btn-success" id="adt-button">Generar ADT (Admit/Discharge/Transfer)</button>
+                    <button type="submit" class="btn btn-success" id="orm-button">Generar ORM (Order Entry)</button>
+                    <button type="submit" class="btn btn-success" id="rsp-button">Generar RSP (Response)</button>
                 </div>
+                <input type="hidden" name="action" id="form-action" value="">
             </form>
         </div>
     </div>
@@ -60,34 +64,31 @@ $this->title = 'Generar Mensajes HL7';
 
 <script>
     $(document).ready(function() {
-        // Acciones de los botones
+        // Manejar el envío del formulario
         $('#adt-button').on('click', function() {
-            const patientId = $('#patient-select').val();
-            if (patientId) {
-                window.open('<?= Url::to(["hl/generate-adm"]) ?>?patientId=' + patientId, '_blank');
-            } else {
-                alert('Por favor, selecciona un paciente.');
-            }
+            $('#form-action').val('adt');
+            $('#message-form').attr('action', '<?= Url::to(["hl/generate-adm"]) ?>');
         });
 
         $('#orm-button').on('click', function() {
-            const patientId = $('#patient-select').val();
-            if (patientId) {
-                const orderDetails = {
-                    patient_id: patientId,
-                };
-                window.open('<?= Url::to(["hl/generate-orm"]) ?>?orderDetails=' + encodeURIComponent(JSON.stringify(orderDetails)), '_blank');
-            } else {
-                alert('Por favor, selecciona un paciente.');
-            }
+            $('#form-action').val('orm');
+            $('#message-form').attr('action', '<?= Url::to(["hl/generate-orm"]) ?>');
         });
 
         $('#rsp-button').on('click', function() {
+            $('#form-action').val('rsp');
+            $('#message-form').attr('action', '<?= Url::to(["hl/generate-rsp"]) ?>');
+        });
+
+        $('#message-form').on('submit', function(e) {
             const patientId = $('#patient-select').val();
-            if (patientId) {
-                window.open('<?= Url::to(["hl/generate-rsp"]) ?>?patientId=' + patientId, '_blank');
-            } else {
-                alert('Por favor, selecciona un paciente.');
+            if (!patientId) {
+                e.preventDefault(); // Previene el envío del formulario si no hay paciente seleccionado
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Por favor, selecciona un paciente.',
+                });
             }
         });
     });

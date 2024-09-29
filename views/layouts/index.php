@@ -8,7 +8,7 @@
 </head>
 <body>
 <script>
-     alert("Debes iniciar sesión.");
+    //alert("Debes iniciar sesión.");
     window.location.href = '<?= Yii::$app->getUrlManager()->createUrl('login') ?>';
 </script>
 </body>

@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/correo-electronico') ?>" class="nav-link">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('correo/index') ?>" class="nav-link">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>Correo Electrónico</p>
                     </a>
@@ -71,22 +71,13 @@
                         <p>Perfil del Usuario</p>
                     </a>
                 </li>
-
-                <!--
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('opciones/configuracion') ?>" class="nav-link">
-                        <i class="nav-icon fas fa-cogs"></i>
-                        <p>Configuración</p>
-                    </a>
-                </li>
-                -->
-                <li class="nav-item">
-                    <a href="<?= Yii::$app->getUrlManager()->createUrl('site/logout') ?>" class="nav-link">
-                        <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Cerrar Sesión</p>
-                    </a>
-                </li>
                 <?php if (Yii::$app->user->identity->rol == "Medico") { ?>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('hl/index') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i>
+                        <p>HL7</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-user-check"></i>
@@ -100,6 +91,12 @@
                     </a>
                 </li>
                 <?php } ?>
+                <li class="nav-item">
+                    <a href="<?= Yii::$app->getUrlManager()->createUrl('site/logout') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Cerrar Sesión</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
