@@ -17,14 +17,14 @@ $this->title = 'Subida de Documentos';
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-muted">
                     <h5>Selecciona los documentos a subir</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body text-muted">
                     <form id="upload-form" enctype="multipart/form-data" method="post" action="<?= Yii::$app->getUrlManager()->createUrl("subida/upload") ?>">
                         <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
 
-                        <div class="form-group">
+                        <div class="form-group text-muted">
                             <?php if (Yii::$app->user->identity->rol == "Medico"): ?>
                                 <label for="medico">Selecciona un Paciente</label>
                             <?php elseif (Yii::$app->user->identity->rol == "Paciente"): ?>
@@ -45,8 +45,8 @@ $this->title = 'Subida de Documentos';
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="ruta_archivo">Archivos</label>
+                        <div class="form-group text-muted">
+                            <label for="ruta_archivo ">Archivos</label>
                             <input type="file" name="ArchivosSubidos[ruta_archivo][]" id="ruta_archivo" class="form-control" multiple>
                         </div>
 
@@ -68,7 +68,7 @@ $this->title = 'Subida de Documentos';
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-muted">
                     <h5>Archivos Subidos</h5>
                 </div>
                 <div class="card-body">
@@ -103,7 +103,7 @@ $this->title = 'Subida de Documentos';
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <p>No has subido archivos aún.</p>
+                        <p class="text-muted">No has subido archivos aún.</p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -114,12 +114,12 @@ $this->title = 'Subida de Documentos';
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header text-muted">
                     <h5>Archivos Recibidos</h5>
                 </div>
                 <div class="card-body">
                     <?php if (!empty($archivosre)): ?>
-                        <table class="table table-striped">
+                        <table class="table table-striped ">
                             <thead>
                                 <tr>
                                     <th>Nombre del Archivo</th>
@@ -149,7 +149,7 @@ $this->title = 'Subida de Documentos';
                             </tbody>
                         </table>
                     <?php else: ?>
-                        <p>No tiene archivos aún.</p>
+                        <p class="text-muted">No tiene archivos aún.</p>
                     <?php endif; ?>
                 </div>
             </div>
