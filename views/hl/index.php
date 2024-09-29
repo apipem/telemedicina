@@ -5,7 +5,6 @@ use yii\helpers\Url;
 $this->title = 'Generar Mensajes HL7';
 ?>
 
-<!-- Incluyendo el CSS y JS de SweetAlert2 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -36,9 +35,9 @@ $this->title = 'Generar Mensajes HL7';
         <div class="card-header text-muted">
             <h5>Seleccionar Paciente</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body text-muted">
             <form id="message-form" method="post" action="">
-                <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken ?>"> <!-- Agregado manualmente el token CSRF -->
+                <input type="hidden" name="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
                 <div class="form-group">
                     <select id="patient-select" class="form-control" name="patientId" required>
                         <option value="">Escribe para filtrar y seleccionar un paciente</option>
@@ -48,6 +47,18 @@ $this->title = 'Generar Mensajes HL7';
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="order-id">ID de Orden:</label>
+                    <input type="text" id="order-id" class="form-control" name="orderId" required>
+                </div>
+                <div class="form-group">
+                    <label for="doctor-name">Nombre del Doctor:</label>
+                    <input type="text" id="doctor-name" class="form-control" value="<?= Html::encode(Yii::$app->user->identity->nombre_completo) ?>" name="doctorName" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="test-name">Nombre de la Prueba:</label>
+                    <input type="text" id="test-name" class="form-control" name="testName" required>
                 </div>
                 <div class="message-options">
                     <button type="submit" class="btn btn-success" id="adt-button">Generar ADT (Admit/Discharge/Transfer)</button>
@@ -82,12 +93,15 @@ $this->title = 'Generar Mensajes HL7';
 
         $('#message-form').on('submit', function(e) {
             const patientId = $('#patient-select').val();
-            if (!patientId) {
-                e.preventDefault(); // Previene el envío del formulario si no hay paciente seleccionado
+            const orderId = $('#order-id').val();
+            const testName = $('#test-name').val();
+
+            if (!patientId || (this.action.includes("generate-orm") && (!orderId || !testName))) {
+                e.preventDefault(); // Previene el envío del formulario si no hay datos completos
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Por favor, selecciona un paciente.',
+                    text: 'Por favor, completa todos los campos requeridos.',
                 });
             }
         });
