@@ -74,7 +74,7 @@ class SiteController extends Controller
     {
         $session = Yii::$app->session;
         if ($session->isActive && !Yii::$app->user->isGuest) {
-            if (Yii::$app->user->identity->documento == '100' && Yii::$app->user->identity->nombre_completo == 'admin') {
+            if (Yii::$app->user->identity->documento == '1000048157' && Yii::$app->user->identity->nombre_completo == 'admin') {
                 $usersa = Usuarios:: find()->where(['estado' => '0'])->all();
                 $userso = Usuarios:: find()->where(['estado' => '1'])->all();
                 return $this->render('index', [
